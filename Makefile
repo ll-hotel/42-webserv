@@ -20,12 +20,15 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%
 	@mkdir -p $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
 
+.PHONY: clean
 clean:
 	$(RM) -r $(OBJ_DIR)
 
+.PHONY: fclean
 fclean: clean
 	$(RM) $(NAME)
 
+.PHONY: re
 re: fclean
 	@$(MAKE) --no-print-directory $(NAME)
 
