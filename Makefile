@@ -4,8 +4,12 @@ CXX := c++
 CPPFLAGS := -MMD -MP
 CXXFLAGS := -Wall -Wextra -Werror -std=c++98
 
+INCLUDE_DIR := include/
 SRC_DIR := src
 SRCS := main.cpp
+SRCS += worker/Socket.cpp
+SRCS += worker/Client.cpp
+
 OBJ_DIR := .build
 OBJS := $(patsubst %,$(OBJ_DIR)/%.o,$(SRCS))
 DEPS := $(patsubst %.o,%.d,$(OBJS))
@@ -18,7 +22,7 @@ $(NAME): $(OBJS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%
 	@mkdir -p $(dir $@)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $< -I ${INCLUDE_DIR}
 
 .PHONY: clean
 clean:
