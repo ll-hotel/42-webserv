@@ -10,3 +10,4 @@
 *.out
 *.app
 webserv
+.vscode/settings.json
