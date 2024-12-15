@@ -11,7 +11,7 @@ CXXFLAGS := -Werror
 CXXFLAGS += -std=c++98
 CXXFLAGS += -Iinclude
 
-MODULES := worker
+MODULES := worker config
 OBJ_DIR := .obj
 SRC_DIR := src
 
@@ -26,8 +26,7 @@ DEPS := $(patsubst %.o,%.d,$(OBJS))
 NAME := webserv
 
 .PHONY: all
-all:
-	$(MAKE) $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(OBJS)

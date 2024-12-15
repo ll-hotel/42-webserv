@@ -9,4 +9,7 @@
 *.exe
 *.out
 *.app
-webserv
+/webserv
+
+# Misc
+webserv.conf
