@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 21:21:15 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/12/15 22:07:31 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/12/16 02:41:42 by ll-hotel         ###   ########.fr       */
 /* ************************************************************************** */
 
 #include "webserv/Config.hpp"
@@ -20,7 +20,6 @@
 
 extern std::string read_file(const std::string &file_path);
 extern ConfigToken::Vector lexer(const std::string &content);
-extern ConfigToken parser(ConfigToken::List::const_iterator block_start);
 
 Config::Config() throw()
 {
