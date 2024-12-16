@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:46:18 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/12/15 20:46:25 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/12/16 05:30:53 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ class Token {
 		~Token() throw()
 		{};
 
-		const_typeref type() const throw() { return _type; }
-		const_valueref value() const throw() { return _value; }
+		const_typeref getType() const throw() { return _type; }
+		const_valueref getValue() const throw() { return _value; }
 };
 
 enum LexerType {

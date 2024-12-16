@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2024/12/16 05:12:02 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/12/16 05:33:58 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ int main(void)
 	}
 
 	std::cout << "Configuration:\n\n";
-	for (size_t i = 0; i < conf.getServerConfigs().size(); i += 1) {
-		const Config::Server &srv = conf.getServerConfigs()[i];
+	for (size_t i = 0; i < conf.getServers().size(); i += 1) {
+		const Config::Server &srv = conf.getServers()[i];
 
-		if (srv.server_names().size() == 0)
+		if (srv.getServerNames().size() == 0)
 			std::cout << "<anonymous server> ";
-		for (size_t i = 0; i < srv.server_names().size(); i += 1)
-			std::cout << srv.server_names()[i] << ' ';
+		for (size_t i = 0; i < srv.getServerNames().size(); i += 1)
+			std::cout << srv.getServerNames()[i] << ' ';
 		std::cout << "{";
-		std::cout << "\n\thost: " << srv.host();
-		std::cout << "\n\tport: " << srv.port();
+		std::cout << "\n\thost: " << srv.getHost();
+		std::cout << "\n\tport: " << srv.getPort();
 		std::cout << "\n}" << std::endl;
 	}
 	return 0;

@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 21:21:15 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/12/16 02:41:42 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/12/16 05:29:51 by ll-hotel         ###   ########.fr       */
 /* ************************************************************************** */
 
 #include "webserv/Config.hpp"
@@ -52,7 +52,7 @@ Config::~Config() throw()
 {
 }
 
-const std::vector<Config::Server>& Config::getServerConfigs()
+const std::vector<Config::Server>& Config::getServers()
 {
 	return _servers;
 }

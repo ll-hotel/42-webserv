@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 13:04:23 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/12/15 22:06:23 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/12/16 05:37:37 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ ConfigToken::Vector lexer(const std::string &content)
 
 static void increment_i(const ConfigToken &tok, size_t &i, const size_t l) {
 	i += 1;
-	if (i >= l && tok.type() != BLOCK_END) {
+	if (i >= l && tok.getType() != BLOCK_END) {
 		std::string err = "missing ";
-		if (tok.type() == BLOCK_START || tok.type() == ARG_END)
+		if (tok.getType() == BLOCK_START || tok.getType() == ARG_END)
 			err += "'}'";
 		else
-			err += "value after token " + tok.value();
+			err += "value after token " + tok.getValue();
 		throw(WebservException(err));
 	}
 }
@@ -86,18 +86,18 @@ static void token_checker(const ConfigToken::Vector &tokens)
 	size_t i = 0;
 
 	while (i < limit) {
-		if (tokens[i].value() != "server")
-			THROW_UNEXPECTED(tokens[i].value());
+		if (tokens[i].getValue() != "server")
+			THROW_UNEXPECTED(tokens[i].getValue());
 		increment_i(tokens[i], i, limit);
-		if (tokens[i].type() != BLOCK_START)
-			THROW_UNEXPECTED(tokens[i].value());
+		if (tokens[i].getType() != BLOCK_START)
+			THROW_UNEXPECTED(tokens[i].getValue());
 		increment_i(tokens[i], i, limit);
-		while (tokens[i].type() != BLOCK_END) {
+		while (tokens[i].getType() != BLOCK_END) {
 			do {
-				if (tokens[i].type() != WORD)
-					THROW_UNEXPECTED(tokens[i].value());
+				if (tokens[i].getType() != WORD)
+					THROW_UNEXPECTED(tokens[i].getValue());
 				increment_i(tokens[i], i, limit);
-			} while (tokens[i].type() != ARG_END);
+			} while (tokens[i].getType() != ARG_END);
 			increment_i(tokens[i], i, limit);
 		}
 		increment_i(tokens[i], i, limit);

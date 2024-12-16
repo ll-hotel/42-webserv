@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 21:00:43 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/12/15 22:03:39 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/12/16 05:28:14 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ public:
 		Server(ConfigToken::Vector::const_iterator &it);
                 Server& operator=(const Server &other) throw();
 
-		uint16_t port() const;
-		const std::string& host() const;
-		const std::vector<std::string>& server_names() const;
+		uint16_t getPort() const;
+		const std::string& getHost() const;
+		const std::vector<std::string>& getServerNames() const;
 	};
 
 private:
@@ -67,7 +67,7 @@ public:
 	Config& operator=(const Config&) throw();
 	~Config() throw();
 
-	const std::vector<Server>& getServerConfigs();
+	const std::vector<Server>& getServers();
 	const std::map<uint16_t, std::string>& getErrorPages();
 	size_t getMaxClientBodySize();
 
