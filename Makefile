@@ -11,7 +11,7 @@ CXXFLAGS := -Werror
 CXXFLAGS += -std=c++98
 CXXFLAGS += -Iinclude
 
-MODULES := worker config
+MODULES := config
 OBJ_DIR := .obj
 SRC_DIR := src
 
