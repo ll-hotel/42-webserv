@@ -6,115 +6,62 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:22:26 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/08 19:35:33 by gcros            ###   ########.fr       */
+/*   Updated: 2025/01/08 20:52:20 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/SocketListener.hpp"
-#include <string>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <errno.h>
+#include "webserv/Exception.hpp"
 #include <cstring>
+#include <errno.h>
+#include <netinet/in.h>
+#include <string>
+#include <unistd.h>
 
-SocketListener SocketListener::generate(int port)
+SocketListener::SocketListener(int port)
 {
-	SocketListener	socket(port);
-
-	if (socket.create())
-		throw(WebservException(std::string("socket create fail: ") + strerror(errno)));
-	if (socket.bind())
-		throw(WebservException(std::string("socket bind fail: ") + strerror(errno)));
-	if (socket.listen())
-		throw(WebservException(std::string("socket listen fail: ") + strerror(errno)));
-	return socket;
+	create();
+	bind(port);
+	listen();
 }
 
 SocketListener::SocketListener()
 {
-	_close = true;
-	_fail = false;
-	_bind = false;
-	_create = false;
-	_listen = false;
-	_port = DEFAULT_PORT;
-	_fd = -1;
-	_limit_queue = DEFAULT_LIMIT_QUEUE;
-}
-
-SocketListener::SocketListener(int port):
-_port(port)
-{
-	_close = true;
-	_fail = false;
-	_bind = false;
-	_create = false;
-	_listen = false;
-	_fd = -1;
-	_limit_queue = DEFAULT_LIMIT_QUEUE;
+	create();
+	bind(DEFAULT_PORT);
+	listen();
 }
 
 SocketListener::~SocketListener()
 {
-	this->close();
+	close(_fd);
 }
 
-int SocketListener::create()
+void SocketListener::create()
 {
-	if (this->_fail)
-		return (1);
-	if (this->_create)
-		return (1);
-	int serverSocket = ::socket(DEFAULT_FAMILY, DEFAULT_STREAM, 0);
-	if (serverSocket == -1)
-	{
-		this->_fail = true;
-		return (1);
-	}
-	this->_fd = serverSocket;
-	this->_create = true;
-	return (0);
+	_failed = false;
+	_limit_queue = DEFAULT_LIMIT_QUEUE;
+	_fd = socket(DEFAULT_FAMILY, DEFAULT_STREAM, 0);
+	if (_fd == -1)
+		throw(WebservException(std::string("socket create fail: ") + strerror(errno)));
 }
 
-int SocketListener::bind()
+void SocketListener::bind(int port)
 {
-	if (this->_fail)
-		return (1);
-	if (not this->_create)
-		return (1);
-	if (not this->_close)
-		return (1);
-	sockaddr_in serverAddress;
-	serverAddress.sin_family = DEFAULT_FAMILY;
-	serverAddress.sin_port = htons(this->_port);
-	serverAddress.sin_addr.s_addr = DEFAULT_ADDR;
-
-	if (::bind(this->_fd,
-		(struct sockaddr*)&serverAddress, 
-		sizeof(serverAddress)))
-	{
-		this->_fail = true;
-		this->close();
-		return (1);
-	}
-	this->_bind = true;
-	return (0);
+	sockaddr_in address = {
+		.sin_family = DEFAULT_FAMILY,
+		.sin_port = htons(port),
+		.sin_addr = {.s_addr = DEFAULT_ADDR},
+	};
+	_port = port;
+	if (::bind(_fd, (struct sockaddr *)&address, sizeof(address)))
+		throw(WebservException(std::string("socket bind fail: ") + strerror(errno)));
 }
 
-int SocketListener::listen()
+void SocketListener::listen()
 {
-	if (this->_fail)
-		return (1);
-	if (not this->_bind)
-		return (1);
-	if (::listen(this->_fd, this->_limit_queue))
-	{
-		this->_fail = true;
-		this->close();
-		return (1);
-	}
-	this->_listen = true;
-	return (0);
+	if (::listen(_fd, _limit_queue))
+		throw(WebservException(std::string("socket listen fail: ") + strerror(errno)));
 }
 
 int SocketListener::accept()
@@ -123,19 +70,20 @@ int SocketListener::accept()
 	socklen_t	client_len = sizeof(client);
 	int		client_fd = -1;
 	
-	client_fd = ::accept(this->_fd, &client, &client_len);
+	client_fd = ::accept(_fd, &client, &client_len);
 	if (client_fd == -1)
 		throw (WebservException(std::string("socket accept: ") + strerror(errno)));
-	std::cout << "connection from " << client.sa_data << std::endl;
+	std::cerr << "connection on port " << _port << std::endl;
 	return (0);
 }
 
-int SocketListener::close()
+bool SocketListener::has_failed() const
 {
-	if (this->_close)
-		return (1);
-	::close(this->_fd);
-	this->_fd = -1;
-	this->_close = true;
-	return (0);
+    return _failed;
+}
+
+// TODO
+bool SocketListener::poll() const
+{
+    return true;
 }
