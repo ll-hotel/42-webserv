@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/08 20:51:25 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/08 21:20:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,12 @@ int main(void)
 		}
 	}
 	while (listeners.size()) {
-		listeners.back()->accept();
+		ClientSocket client = listeners.back()->accept();
+
+		std::string request = client.recv();
+		std::cout << request << std::endl;
+		client.send("<head></head><body>hello</body>");
+
 		delete listeners.back();
 		listeners.pop_back();
 	}
