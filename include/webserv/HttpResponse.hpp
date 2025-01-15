@@ -6,12 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:04:35 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/01/15 16:42:27 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:34:36 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTP_RESPONSE_HPP
 #define HTTP_RESPONSE_HPP
+#include "webserv/HttpRequest.hpp"
 #include <string>
 
 typedef enum {
@@ -57,7 +58,7 @@ typedef enum {
 	HTTP_ERROR_LENGTH_REQUIRED = 411,
 	HTTP_ERROR_PRECOND_FAILED = 412,
 	HTTP_ERROR_REQUEST_ENTITY_TOO_LARGE = 413,
-	HTTP_ERROR_REQUEST_URI_TOO_LON = 414,
+	HTTP_ERROR_REQUEST_URI_TOO_LONG = 414,
 	HTTP_ERROR_UNSUPPORTED_MEDIA_TYPE = 415,
 	HTTP_ERROR_REQUESTED_RANGE_UNSATISFIABLE = 416,
 	HTTP_ERROR_EXPECTATION_FAILED = 417,
@@ -104,12 +105,12 @@ const std::string& status_table(t_status_code code);
 class HttpResponse {
 private:
 	t_status_code _status_code;
-	std::string _resource;
+	std::string _file;
 
 public:
 	HttpResponse();
 	HttpResponse(const HttpResponse&);
-	HttpResponse(const std::string &resource);
+	HttpResponse(const HttpRequest &request);
 	~HttpResponse();
 	HttpResponse& operator=(const HttpResponse&);
 

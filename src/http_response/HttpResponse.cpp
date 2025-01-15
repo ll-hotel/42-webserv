@@ -6,36 +6,81 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:11:31 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/01/15 16:41:43 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:48:49 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/HttpResponse.hpp"
+#include "webserv/HttpRequest.hpp"
+#include <cerrno>
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <sys/stat.h>
 
 HttpResponse::HttpResponse()
 {
-	_status_code = SUCCESS_OK;
+	_status_code = HTTP_ERROR_NOT_FOUND;
 }
 
-HttpResponse::HttpResponse(const std::string &resource)
+HttpResponse::HttpResponse(const HttpRequest &request)
 {
-	_status_code = SUCCESS_OK;
-	_resource = resource;
+	if (request.version() != "HTTP/1.1\r")
+		_status_code = SERVER_ERROR_HTTP_VERSION_NOT_SUPPORTED;
+	else if (request.method() != "GET" && request.method() != "POST")
+		_status_code = HTTP_ERROR_METHOD_NOT_ALLOWED;
+	else {
+		std::string filename = "resources" + request.resource();
+		struct stat file_stat = {0};
+		if (::stat(filename.c_str(), &file_stat)) {
+			switch (errno) {
+			case ENOENT:
+				_status_code = HTTP_ERROR_NOT_FOUND;
+				break;
+			case EACCES:
+			case EPERM:
+				_status_code = HTTP_ERROR_FORBIDDEN;
+				break;
+			case EISDIR:
+				_status_code = HTTP_ERROR_BAD_REQUEST;
+				break;
+			case ENAMETOOLONG:
+				_status_code = HTTP_ERROR_REQUEST_URI_TOO_LONG;
+				break;
+			case ENOSPC:
+				_status_code = SERVER_ERROR_INSUFFICIENT_STORAGE;
+				break;
+			case ETIMEDOUT:
+				_status_code = HTTP_ERROR_TIMEOUT;
+				break;
+			case EIO:
+			case ENOMEM:
+			case ESTALE:
+			default:
+				_status_code = SERVER_ERROR_INTERNAL_SERVER_ERROR;
+				break;
+			}
+			return;
+		}
+		if (S_ISDIR(file_stat.st_mode)) {
+			_status_code = HTTP_ERROR_NOT_FOUND;
+		} else {
+			_status_code = SUCCESS_OK;
+			_file = filename;
+		}
+	}
 }
 
 HttpResponse::HttpResponse(const HttpResponse &other)
 {
 	_status_code = other._status_code;
-	_resource = other._resource;
+	_file = other._file;
 }
 
 HttpResponse& HttpResponse::operator=(const HttpResponse &other)
 {
 	_status_code = other._status_code;
-	_resource = other._resource;
+	_file = other._file;
 	return *this;
 }
 
@@ -45,11 +90,11 @@ HttpResponse::~HttpResponse()
 
 static std::string read_file(const std::string &path)
 {
-	std::ifstream fstream(path.c_str());
+	std::ifstream file_stream(path.c_str());
 	std::string content;
 
-	if (fstream.is_open()) {
-		std::getline(fstream, content, '\0');
+	if (file_stream.is_open()) {
+		std::getline(file_stream, content, '\0');
 	}
 	return content;
 }
@@ -65,6 +110,7 @@ std::string create_status_line(t_status_code code)
 		strs >> str_code;
 		status_line += str_code;
 	}
+	status_line += ' ';
 	status_line += status_table(code);
 	status_line += "\r\n";
 	return status_line;
@@ -83,6 +129,13 @@ std::string HttpResponse::generate()
 	// Empty line
 	str += "\r\n";
 	// Response body
-	str += read_file(_resource);
+	if (_status_code == SUCCESS_OK)
+		str += read_file(_file);
+	switch (_status_code) {
+		case HTTP_ERROR_NOT_FOUND:
+			str += read_file("resources/error_pages/404.html");
+			break;
+		default: break;
+	}
 	return str;
 }

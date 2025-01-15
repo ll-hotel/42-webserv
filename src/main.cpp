@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/15 17:02:27 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:52:21 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,28 @@ int main(void)
 			e.print();
 		}
 	}
-	while (listeners.size()) {
-		ClientSocket client = listeners.back()->accept();
 
-		std::string request = client.recv();
-		std::cout << request << std::endl;
+	while (listeners.size() > 0) {
+		for (size_t i = 0; i < listeners.size(); i += 1) {
+			ClientSocket client = listeners[i]->accept();
 
-		try {
-			HttpRequest http_req(request);
-			HttpResponse http_response(http_req);
+			std::string request = client.recv();
+			std::cout << "--- Request ---\n" << request << std::endl;
 
-			std::string response = http_response.generate();
-			std::cout << "--- Reponse ---\n" << response << std::endl;
+			try {
+				HttpRequest http_req(request);
+				HttpResponse http_response(http_req);
 
-			client.send(response);
-		} catch (WebservException &e) {
-			e.print();
+				std::string response = http_response.generate();
+				std::cout << "--- Response ---\n" << response << std::endl;
+
+				client.send(response);
+			} catch (WebservException &e) {
+				e.print();
+			}
 		}
-
+	}
+	while (listeners.size()) {
 		delete listeners.back();
 		listeners.pop_back();
 	}

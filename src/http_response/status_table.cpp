@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:36:52 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/01/15 16:43:31 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:43:51 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,88 +18,88 @@ const std::string& status_table(t_status_code code)
 	static std::map<t_status_code, std::string> status;
 
 	if (status.empty()) {
-		status[INFO_CONTINUE] = "Info continue";
-		status[INFO_SWITCHING_PROTOCOLS] = "Info switching protocols";
-		status[INFO_PROCESSING] = "Info processing";
-		status[INFO_EARLY_HINTS] = "Info early hints";
+		status[INFO_CONTINUE] = "Continue";
+		status[INFO_SWITCHING_PROTOCOLS] = "Switching protocols";
+		status[INFO_PROCESSING] = "Processing";
+		status[INFO_EARLY_HINTS] = "Early hints";
 
-		status[SUCCESS_OK] = "Success ok";
-		status[SUCCESS_CREATED] = "Success created";
-		status[SUCCESS_ACCEPTED] = "Success accepted";
-		status[SUCCESS_NOT_AUTHORITATIVE_INFORMATION] = "Success not authoritative information";
-		status[SUCCESS_NO_CONTENT] = "Success no content";
-		status[SUCCESS_RESET_CONTENT] = "Success reset content";
-		status[SUCCESS_PARTIAL_CONTENT] = "Success partial content";
-		status[SUCCESS_MULTI_STATUS] = "Success multi status";
-		status[SUCCESS_ALREADY_REPORTED] = "Success already reported";
-		status[SUCCESS_CONTENT_DIFFERENT] = "Success content different";
-		status[SUCCESS_IM_USED] = "Success im used";
+		status[SUCCESS_OK] = "Ok";
+		status[SUCCESS_CREATED] = "Created";
+		status[SUCCESS_ACCEPTED] = "Accepted";
+		status[SUCCESS_NOT_AUTHORITATIVE_INFORMATION] = "Not authoritative information";
+		status[SUCCESS_NO_CONTENT] = "No content";
+		status[SUCCESS_RESET_CONTENT] = "Reset content";
+		status[SUCCESS_PARTIAL_CONTENT] = "Partial content";
+		status[SUCCESS_MULTI_STATUS] = "Multi status";
+		status[SUCCESS_ALREADY_REPORTED] = "Already reported";
+		status[SUCCESS_CONTENT_DIFFERENT] = "Content different";
+		status[SUCCESS_IM_USED] = "Im used";
 
-		status[REDIRECT_MULTIPLE_CHOICES] = "Redirect multiple choices";
-		status[REDIRECT_MOVED_PERMANENTLY] = "Redirect moved permanently";
-		status[REDIRECT_FOUND] = "Redirect found";
-		status[REDIRECT_SEE_OTHER] = "Redirect see other";
-		status[REDIRECT_NOT_MODIFIED] = "Redirect not modified";
-		status[REDIRECT_USE_PROXY] = "Redirect use proxy";
-		status[REDIRECT__UNUSED] = "Redirect  unused";
-		status[REDIRECT_TEMPORARY_REDIRECT] = "Redirect temporary redirect";
-		status[REDIRECT_PERMANENT_REDIRECT] = "Redirect permanent redirect";
-		status[REDIRECT_TOO_MANY_REDIRECTS] = "Redirect too many redirects";
+		status[REDIRECT_MULTIPLE_CHOICES] = "Multiple choices";
+		status[REDIRECT_MOVED_PERMANENTLY] = "Moved permanently";
+		status[REDIRECT_FOUND] = "Found";
+		status[REDIRECT_SEE_OTHER] = "See other";
+		status[REDIRECT_NOT_MODIFIED] = "Not modified";
+		status[REDIRECT_USE_PROXY] = "Use proxy";
+		status[REDIRECT__UNUSED] = " unused";
+		status[REDIRECT_TEMPORARY_REDIRECT] = "Temporary redirect";
+		status[REDIRECT_PERMANENT_REDIRECT] = "Permanent redirect";
+		status[REDIRECT_TOO_MANY_REDIRECTS] = "Too many redirects";
 
-		status[HTTP_ERROR_BAD_REQUEST] = "Http error bad request";
-		status[HTTP_ERROR_UNAUTHORIZED] = "Http error unauthorized";
-		status[HTTP_ERROR_PAYMENT_REQUIRED] = "Http error payment required";
-		status[HTTP_ERROR_FORBIDDEN] = "Http error forbidden";
-		status[HTTP_ERROR_NOT_FOUND] = "Http error not found";
-		status[HTTP_ERROR_METHOD_NOT_ALLOWED] = "Http error method not allowed";
-		status[HTTP_ERROR_NOT_ACCEPTABLE] = "Http error not acceptable";
-		status[HTTP_ERROR_PROXY_AUTH_REQUIRED] = "Http error proxy auth required";
-		status[HTTP_ERROR_TIMEOUT] = "Http error timeout";
-		status[HTTP_ERROR_CONFLICT] = "Http error conflict";
-		status[HTTP_ERROR_GONE] = "Http error gone";
-		status[HTTP_ERROR_LENGTH_REQUIRED] = "Http error length required";
-		status[HTTP_ERROR_PRECOND_FAILED] = "Http error precond failed";
-		status[HTTP_ERROR_REQUEST_ENTITY_TOO_LARGE] = "Http error request entity too large";
-		status[HTTP_ERROR_REQUEST_URI_TOO_LON] = "Http error request uri too lon";
-		status[HTTP_ERROR_UNSUPPORTED_MEDIA_TYPE] = "Http error unsupported media type";
-		status[HTTP_ERROR_REQUESTED_RANGE_UNSATISFIABLE] = "Http error requested range unsatisfiable";
-		status[HTTP_ERROR_EXPECTATION_FAILED] = "Http error expectation failed";
-		status[HTTP_ERROR_I_AM_A_TEAPOT] = "Http error i am a teapot";
-		status[HTTP_ERROR_PAGE_EXPIRED] = "Http error page expired";
-		status[HTTP_ERROR_BAD_MAPPING_OR_MISDIRECTED_REQUEST] = "Http error bad mapping or misdirected request";
-		status[HTTP_ERROR_UNPROCESSABLE_ENTITY] = "Http error unprocessable entity";
-		status[HTTP_ERROR_LOCKED] = "Http error locked";
-		status[HTTP_ERROR_METHOD_FAILURE] = "Http error method failure";
-		status[HTTP_ERROR_TOO_EARLY] = "Http error too early";
-		status[HTTP_ERROR_UPGRADE_REQUIRED] = "Http error upgrade required";
-		status[HTTP_ERROR_INVALID_DIGITAL_SIG] = "Http error invalid digital sig";
-		status[HTTP_ERROR_PRECOND_REQUIRED] = "Http error precond required";
-		status[HTTP_ERROR_TOO_MANY_REQUESTS] = "Http error too many requests";
-		status[HTTP_ERROR_REQUEST_HEADER_FIELDS_TOO_LARGE] = "Http error request header fields too large";
-		status[HTTP_ERROR_RETRY_WITH] = "Http error retry with";
-		status[HTTP_ERROR_BLOCKED_BY_WINDOWS_PARENTAL_CONTROL] = "Http error blocked by windows parental control";
-		status[HTTP_ERROR_UNAVAILABLE_FOR_LEGAL_REASONS] = "Http error unavailable for legal reasons";
-		status[HTTP_ERROR_UNRECOVERABLE_ERROR] = "Http error unrecoverable error";
+		status[HTTP_ERROR_BAD_REQUEST] = "Bad request";
+		status[HTTP_ERROR_UNAUTHORIZED] = "Unauthorized";
+		status[HTTP_ERROR_PAYMENT_REQUIRED] = "Payment required";
+		status[HTTP_ERROR_FORBIDDEN] = "Forbidden";
+		status[HTTP_ERROR_NOT_FOUND] = "Not found";
+		status[HTTP_ERROR_METHOD_NOT_ALLOWED] = "Method not allowed";
+		status[HTTP_ERROR_NOT_ACCEPTABLE] = "Not acceptable";
+		status[HTTP_ERROR_PROXY_AUTH_REQUIRED] = "Proxy auth required";
+		status[HTTP_ERROR_TIMEOUT] = "Timeout";
+		status[HTTP_ERROR_CONFLICT] = "Conflict";
+		status[HTTP_ERROR_GONE] = "Gone";
+		status[HTTP_ERROR_LENGTH_REQUIRED] = "Length required";
+		status[HTTP_ERROR_PRECOND_FAILED] = "Precond failed";
+		status[HTTP_ERROR_REQUEST_ENTITY_TOO_LARGE] = "Request entity too large";
+		status[HTTP_ERROR_REQUEST_URI_TOO_LONG] = "Request uri too long";
+		status[HTTP_ERROR_UNSUPPORTED_MEDIA_TYPE] = "Unsupported media type";
+		status[HTTP_ERROR_REQUESTED_RANGE_UNSATISFIABLE] = "Requested range unsatisfiable";
+		status[HTTP_ERROR_EXPECTATION_FAILED] = "Expectation failed";
+		status[HTTP_ERROR_I_AM_A_TEAPOT] = "I am a teapot";
+		status[HTTP_ERROR_PAGE_EXPIRED] = "Page expired";
+		status[HTTP_ERROR_BAD_MAPPING_OR_MISDIRECTED_REQUEST] = "Bad mapping or misdirected request";
+		status[HTTP_ERROR_UNPROCESSABLE_ENTITY] = "Unprocessable entity";
+		status[HTTP_ERROR_LOCKED] = "Locked";
+		status[HTTP_ERROR_METHOD_FAILURE] = "Method failure";
+		status[HTTP_ERROR_TOO_EARLY] = "Too early";
+		status[HTTP_ERROR_UPGRADE_REQUIRED] = "Upgrade required";
+		status[HTTP_ERROR_INVALID_DIGITAL_SIG] = "Invalid digital sig";
+		status[HTTP_ERROR_PRECOND_REQUIRED] = "Precond required";
+		status[HTTP_ERROR_TOO_MANY_REQUESTS] = "Too many requests";
+		status[HTTP_ERROR_REQUEST_HEADER_FIELDS_TOO_LARGE] = "Request header fields too large";
+		status[HTTP_ERROR_RETRY_WITH] = "Retry with";
+		status[HTTP_ERROR_BLOCKED_BY_WINDOWS_PARENTAL_CONTROL] = "Blocked by windows parental control";
+		status[HTTP_ERROR_UNAVAILABLE_FOR_LEGAL_REASONS] = "Unavailable for legal reasons";
+		status[HTTP_ERROR_UNRECOVERABLE_ERROR] = "Unrecoverable error";
 
-		status[HTTP_ERROR_NO_RESPONSE] = "Http error no response";
-		status[HTTP_ERROR_SSL_CERTIFICATE_ERROR] = "Http error SSL certificate error";
-		status[HTTP_ERROR_SSL_CERTIFICATE_REQUIRED] = "Http error SSL certificate required";
-		status[HTTP_ERROR_HTTP_REQUEST_SENT_TO_HTTPS_PORT] = "Http error http request sent to https port";
-		status[HTTP_ERROR_TOKEN_EXPIRED_OR_INVALID] = "Http error token expired or invalid";
-		status[HTTP_ERROR_CLIENT_CLOSED_REQUEST] = "Http error client closed request";
+		status[HTTP_ERROR_NO_RESPONSE] = "No response";
+		status[HTTP_ERROR_SSL_CERTIFICATE_ERROR] = "sSL certificate error";
+		status[HTTP_ERROR_SSL_CERTIFICATE_REQUIRED] = "sSL certificate required";
+		status[HTTP_ERROR_HTTP_REQUEST_SENT_TO_HTTPS_PORT] = "Http request sent to https port";
+		status[HTTP_ERROR_TOKEN_EXPIRED_OR_INVALID] = "Token expired or invalid";
+		status[HTTP_ERROR_CLIENT_CLOSED_REQUEST] = "Client closed request";
 
-		status[SERVER_ERROR_INTERNAL_SERVER_ERROR] = "Server error internal server error";
-		status[SERVER_ERROR_NOT_IMPLEMENTED] = "Server error not implemented";
-		status[SERVER_ERROR_BAD_GATEWAY_OR_PROXY_ERROR] = "Server error bad gateway or proxy error";
-		status[SERVER_ERROR_SERVICE_UNAVAILABLE] = "Server error service unavailable";
-		status[SERVER_ERROR_GATEWAY_TIMEOUT] = "Server error gateway timeout";
-		status[SERVER_ERROR_HTTP_VERSION_NOT_SUPPORTED] = "Server error http version not supported";
-		status[SERVER_ERROR_VARIANT_ALSO_NEGOTIATE] = "Server error variant also negotiate";
-		status[SERVER_ERROR_INSUFFICIENT_STORAGE] = "Server error insufficient storage";
-		status[SERVER_ERROR_LOOP_DETECTED] = "Server error loop detected";
-		status[SERVER_ERROR_BANDWITH_LIMIT_EXCEEDED] = "Server error bandwith limit exceeded";
-		status[SERVER_ERROR_NOT_EXTENDED] = "Server error not extended";
-		status[SERVER_ERROR_NETWORK_AUTH_REQUIRED] = "Server error network auth required";
+		status[SERVER_ERROR_INTERNAL_SERVER_ERROR] = "Internal server error";
+		status[SERVER_ERROR_NOT_IMPLEMENTED] = "Not implemented";
+		status[SERVER_ERROR_BAD_GATEWAY_OR_PROXY_ERROR] = "Bad gateway or proxy error";
+		status[SERVER_ERROR_SERVICE_UNAVAILABLE] = "Service unavailable";
+		status[SERVER_ERROR_GATEWAY_TIMEOUT] = "Gateway timeout";
+		status[SERVER_ERROR_HTTP_VERSION_NOT_SUPPORTED] = "Http version not supported";
+		status[SERVER_ERROR_VARIANT_ALSO_NEGOTIATE] = "Variant also negotiate";
+		status[SERVER_ERROR_INSUFFICIENT_STORAGE] = "Insufficient storage";
+		status[SERVER_ERROR_LOOP_DETECTED] = "Loop detected";
+		status[SERVER_ERROR_BANDWITH_LIMIT_EXCEEDED] = "Bandwith limit exceeded";
+		status[SERVER_ERROR_NOT_EXTENDED] = "Not extended";
+		status[SERVER_ERROR_NETWORK_AUTH_REQUIRED] = "Network auth required";
 	}
 	return status[code];
 }

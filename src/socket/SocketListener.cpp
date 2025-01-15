@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:22:26 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/15 12:59:47 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:51:58 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ ClientSocket SocketListener::accept()
 {
 	ClientSocket client(_fd);
 
-	if (client.fd() == -1)
+	if (!client.connected())
 		WS_THROW(std::string("socket accept: ") + strerror(errno));
 	std::cerr << "connection on port " << _port << std::endl;
 	return client;
