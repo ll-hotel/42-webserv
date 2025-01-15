@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:22:26 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/08 21:23:35 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/15 12:59:47 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void SocketListener::create()
 	_limit_queue = DEFAULT_LIMIT_QUEUE;
 	_fd = socket(DEFAULT_FAMILY, DEFAULT_STREAM, 0);
 	if (_fd == -1)
-		throw(WebservException(std::string("socket create fail: ") + strerror(errno)));
+		WS_THROW(std::string("socket create fail: ") + strerror(errno));
 }
 
 void SocketListener::bind(int port)
@@ -56,60 +56,55 @@ void SocketListener::bind(int port)
 	};
 	_port = port;
 	if (::bind(_fd, (struct sockaddr *)&address, sizeof(address)))
-		throw(WebservException(std::string("socket bind fail: ") + strerror(errno)));
+		WS_THROW(std::string("socket bind fail: ") + strerror(errno));
 }
 
 void SocketListener::listen()
 {
 	if (::listen(_fd, _limit_queue))
-		throw(WebservException(std::string("socket listen fail: ") + strerror(errno)));
+		WS_THROW(std::string("socket listen fail: ") + strerror(errno));
 }
 
 ClientSocket SocketListener::accept()
 {
 	ClientSocket client(_fd);
 
-	if (client.getSocketFd() == -1)
-		throw (WebservException(std::string("socket accept: ") + strerror(errno)));
+	if (client.fd() == -1)
+		WS_THROW(std::string("socket accept: ") + strerror(errno));
 	std::cerr << "connection on port " << _port << std::endl;
 	return client;
 }
 
 bool SocketListener::has_failed() const
 {
-    return _failed;
+	return _failed;
 }
 
 // TODO
 bool SocketListener::poll() const
 {
-    return true;
+	return true;
 }
 
 ClientSocket::ClientSocket(int fd)
 {
-	_len = sizeof(_addr);
-	_socket_fd = ::accept(fd, &_addr, &_len);
+	_addr_len = sizeof(_addr);
+	_fd = ::accept(fd, &_addr, &_addr_len);
 }
 
 ClientSocket::~ClientSocket()
 {
-	close(_socket_fd);
+	close(_fd);
 }
 
-int ClientSocket::getSocketFd() const
-{
-	return _socket_fd;
-}
-
-socklen_t ClientSocket::getLen() const
-{
-	return _len;
-}
-
-const struct sockaddr& ClientSocket::getAddr() const
+const struct sockaddr& ClientSocket::addr() const
 {
 	return _addr;
+}
+
+socklen_t ClientSocket::addr_len() const
+{
+	return _addr_len;
 }
 
 std::string ClientSocket::recv()
@@ -119,7 +114,7 @@ std::string ClientSocket::recv()
 	std::string request;
 
 	do {
-		read = ::recv(_socket_fd, buf, sizeof(buf), 0);
+		read = ::recv(_fd, buf, sizeof(buf), 0);
 		request += buf;
 	} while (read == sizeof(buf));
 	return request;
@@ -127,5 +122,5 @@ std::string ClientSocket::recv()
 
 ssize_t ClientSocket::send(const std::string &buf)
 {
-	return ::send(_socket_fd, buf.c_str(), buf.size(), 0);
+	return ::send(_fd, buf.c_str(), buf.size(), 0);
 }

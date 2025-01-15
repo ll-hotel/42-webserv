@@ -6,15 +6,14 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:02:10 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/08 21:16:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:00:04 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SOCKETLISTENER_HPP
 # define SOCKETLISTENER_HPP
-
 # include <stdint.h>
-#include <string>
+# include <string>
 # include <sys/socket.h>
 
 # define DEFAULT_PORT		80
@@ -26,15 +25,14 @@
 class ClientSocket {
 private:
 	struct sockaddr _addr;
-	socklen_t _len;
-	int _socket_fd;
+	socklen_t _addr_len;
+	int _fd;
 public:
 	ClientSocket(int fd);
 	~ClientSocket();
 
-	int getSocketFd() const;
-	socklen_t getLen() const;
-	const struct sockaddr& getAddr() const;
+	const struct sockaddr& addr() const;
+	socklen_t addr_len() const;
 
 	std::string recv();
 	ssize_t send(const std::string &buf);
@@ -45,16 +43,16 @@ class SocketListener
 public:
 	SocketListener(int port);
 	~SocketListener();
-/*                                     utils                                  */
+	/*                                     utils                                  */
 	ClientSocket accept();
-/*                                     get/set                                */
+	/*                                     get/set                                */
 	bool	has_failed() const;
 	bool	poll() const;
 
 private:
 	SocketListener();
 	SocketListener(const SocketListener &);
-/*                                     utils                                  */
+	/*                                     utils                                  */
 	void	create();
 	void	bind(int port);
 	void	listen();
