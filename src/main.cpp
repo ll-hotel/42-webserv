@@ -6,13 +6,15 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/15 15:39:37 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:02:27 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/Config.hpp"
 #include "webserv/Exception.hpp"
+#include "webserv/HttpRequest.hpp"
 #include "webserv/HttpResponse.hpp"
+#include "webserv/SocketListener.hpp"
 #include <iostream>
 #include <vector>
 
@@ -41,9 +43,35 @@ int main(void)
 		std::cout << "\n}" << std::endl;
 	}
 
-	HttpResponse response("index.html");
+	std::vector<SocketListener*> listeners;
+	for (size_t i = 0; i < conf.getServers().size(); i += 1) {
+		const Config::Server &server = conf.getServers()[i];
+		try {
+			listeners.push_back(new SocketListener(server.getPort()));
+		} catch (WebservException &e) {
+			e.print();
+		}
+	}
+	while (listeners.size()) {
+		ClientSocket client = listeners.back()->accept();
 
-	std::string response_string = response.generate();
-	std::cout << response_string << std::endl;
+		std::string request = client.recv();
+		std::cout << request << std::endl;
+
+		try {
+			HttpRequest http_req(request);
+			HttpResponse http_response(http_req);
+
+			std::string response = http_response.generate();
+			std::cout << "--- Reponse ---\n" << response << std::endl;
+
+			client.send(response);
+		} catch (WebservException &e) {
+			e.print();
+		}
+
+		delete listeners.back();
+		listeners.pop_back();
+	}
 	return 0;
 }
