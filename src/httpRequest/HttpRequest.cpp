@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 20:08:58 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/08 21:20:12 by gcros            ###   ########.fr       */
+/*   Updated: 2025/01/15 12:17:32 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,48 +18,45 @@
 
 HttpRequest::HttpRequest()
 {
-	_type = "";
-	_version = "";
-	_resources = "";
-	_request = "";
 }
 
 HttpRequest::HttpRequest(const HttpRequest &rp)
 {
-	_type = rp._type;
-	_version = rp._version;
-	_request = rp._request;
+	*this = rp;
 }
 
-HttpRequest::HttpRequest(std::string request)
+HttpRequest& HttpRequest::operator=(const HttpRequest &other)
 {
-	std::istringstream	stream_request(request);
-	if (request.empty())
+	_method = other._method;
+	_version = other._version;
+	_resources = other._resources;
+	_request = other._request;
+	return *this;
+}
+
+HttpRequest::HttpRequest(const std::string &request)
+{
+	std::istringstream stream_request(request);
+
+	if (request.empty() || !stream_request)
 		throw(WebservException("empty request"));
-	if (!stream_request)
-		throw(WebservException("empty request"));
-	std::string	word;
-	std::getline(stream_request, word, ' ');
-	if (word != "GET" && word != "POST")
-		throw(WebservException("unsuported request " + word));
-	this->_type = word;
+	std::getline(stream_request, _method, ' ');
+	if (_method != "GET" && _method != "POST")
+		throw(WebservException("unsupported request method " + _method));
 	if (!stream_request)
 		throw(WebservException("incomplete request"));
-	std::getline(stream_request, word, ' ');
-	this->_resources = word;
+	std::getline(stream_request, _resources, ' ');
 	if (!stream_request)
 		throw(WebservException("incomplete request"));
-	std::getline(stream_request, word);
-	if (word != "HTTP/1.1\r")
-		throw(WebservException("unsuported Protocol " + word));
-	this->_version = word;
-	if (std::getline(stream_request, word, '\0'))
-		this->_request = word;
+	std::getline(stream_request, _version, '\n');
+	if (_version != "HTTP/1.1\r")
+		throw(WebservException("unsupported HTTP version " + _version));
+	std::getline(stream_request, _request, '\0');
 }
 
 void HttpRequest::print()
 {
-	std::cout << this->_type
+	std::cout << this->_method
 		<< " " << this->_resources
 		<< " " << this->_version
 		<< std::endl;

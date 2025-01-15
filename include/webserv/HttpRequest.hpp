@@ -6,34 +6,34 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:54:36 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/08 21:04:43 by gcros            ###   ########.fr       */
+/*   Updated: 2025/01/15 12:16:39 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPREQUEST_HPP
 # define HTTPREQUEST_HPP
-
-#include <string>
+# include <string>
 
 class HttpRequest
 {
 private:
-	std::string	_type;
-	std::string	_version;
+	std::string	_method;
 	std::string	_resources;
+	std::string	_version;
 	std::string	_request;
 public:
 	HttpRequest();
-	HttpRequest(const HttpRequest& rp);
-	HttpRequest(std::string request);
+	HttpRequest(const HttpRequest&);
+	HttpRequest(const std::string &request);
+	HttpRequest& operator=(const HttpRequest&);
 
-	std::string	getType() const{return _type;}
-	std::string	getVersion() const{return _version;}
-	std::string	getRessources() const{return _resources;}
-	std::string	getRequest() const{return _request;}
-	
-	void		print();
-	
+	const std::string& method() const { return _method; }
+	const std::string& resources() const { return _resources; }
+	const std::string& version() const { return _version; }
+	const std::string& request() const { return _request; }
+
+	/* For debug purposes only */
+	void print();
 };
 
 #endif
