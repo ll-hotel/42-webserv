@@ -6,12 +6,13 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2024/12/16 05:33:58 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/15 15:39:37 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/Config.hpp"
 #include "webserv/Exception.hpp"
+#include "webserv/HttpResponse.hpp"
 #include <iostream>
 #include <vector>
 
@@ -39,5 +40,10 @@ int main(void)
 		std::cout << "\n\tport: " << srv.getPort();
 		std::cout << "\n}" << std::endl;
 	}
+
+	HttpResponse response("index.html");
+
+	std::string response_string = response.generate();
+	std::cout << response_string << std::endl;
 	return 0;
 }
