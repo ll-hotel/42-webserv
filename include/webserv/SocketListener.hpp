@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:02:10 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/15 13:00:04 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:41:35 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ private:
 public:
 	ClientSocket(int fd);
 	~ClientSocket();
+
+	int	fd();
 
 	const struct sockaddr& addr() const;
 	socklen_t addr_len() const;

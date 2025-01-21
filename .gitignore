@@ -13,4 +13,9 @@
 
 # Misc
 webserv.conf
-.vscode/settings.json
+.vscode/
+
+# Test
+
+*Test.cpp
+*test.cpp
