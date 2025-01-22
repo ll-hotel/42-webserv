@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:22:26 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/21 18:46:54 by gcros            ###   ########.fr       */
+/*   Updated: 2025/01/22 15:43:30 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,6 @@ ClientSocket::~ClientSocket()
 	close(_fd);
 }
 
-int ClientSocket::fd()
-{
-	return this->_fd;
-}
 const struct sockaddr &ClientSocket::addr() const
 {
 	return _addr;
@@ -108,6 +104,11 @@ const struct sockaddr &ClientSocket::addr() const
 socklen_t ClientSocket::addr_len() const
 {
 	return _addr_len;
+}
+
+int ClientSocket::fd() const
+{
+	return _fd;
 }
 
 std::string ClientSocket::recv()
