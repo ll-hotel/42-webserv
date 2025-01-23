@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:02:10 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/15 13:00:04 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:43:30 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ public:
 
 	const struct sockaddr& addr() const;
 	socklen_t addr_len() const;
+	int fd() const;
 
 	std::string recv();
 	ssize_t send(const std::string &buf);

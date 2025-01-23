@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:22:26 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/15 12:59:47 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:43:30 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,6 @@ void SocketListener::listen()
 ClientSocket SocketListener::accept()
 {
 	ClientSocket client(_fd);
-
-	if (client.fd() == -1)
-		WS_THROW(std::string("socket accept: ") + strerror(errno));
 	std::cerr << "connection on port " << _port << std::endl;
 	return client;
 }
@@ -90,6 +87,8 @@ ClientSocket::ClientSocket(int fd)
 {
 	_addr_len = sizeof(_addr);
 	_fd = ::accept(fd, &_addr, &_addr_len);
+	if (_fd < 0)
+		throw (WebservException(std::string("accept: ") + strerror(errno)));
 }
 
 ClientSocket::~ClientSocket()
@@ -97,7 +96,7 @@ ClientSocket::~ClientSocket()
 	close(_fd);
 }
 
-const struct sockaddr& ClientSocket::addr() const
+const struct sockaddr &ClientSocket::addr() const
 {
 	return _addr;
 }
@@ -105,6 +104,11 @@ const struct sockaddr& ClientSocket::addr() const
 socklen_t ClientSocket::addr_len() const
 {
 	return _addr_len;
+}
+
+int ClientSocket::fd() const
+{
+	return _fd;
 }
 
 std::string ClientSocket::recv()
