@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 20:08:58 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/15 14:54:02 by gcros            ###   ########.fr       */
+/*   Updated: 2025/01/23 16:30:32 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ HttpRequest::HttpRequest()
 HttpRequest::HttpRequest(const HttpRequest &rp):
 _method(rp._method),
 _version(rp._version),
-_resources(rp._resources),
+_resource(rp._resource),
 _request(rp._request)
 {
 }
@@ -32,7 +32,7 @@ HttpRequest& HttpRequest::operator=(const HttpRequest &other)
 {
 	_method = other._method;
 	_version = other._version;
-	_resources = other._resources;
+	_resource = other._resource;
 	_request = other._request;
 	return *this;
 }
@@ -48,7 +48,7 @@ HttpRequest::HttpRequest(const std::string &request)
 		throw(WebservException("unsupported request method " + _method));
 	if (!stream_request)
 		throw(WebservException("incomplete request"));
-	std::getline(stream_request, _resources, ' ');
+	std::getline(stream_request, _resource, ' ');
 	if (!stream_request)
 		throw(WebservException("incomplete request"));
 	std::getline(stream_request, _version, '\n');
@@ -60,7 +60,7 @@ HttpRequest::HttpRequest(const std::string &request)
 void HttpRequest::print()
 {
 	std::cout << this->_method
-		<< " " << this->_resources
+		<< " " << this->_resource
 		<< " " << this->_version
 		<< std::endl;
 }

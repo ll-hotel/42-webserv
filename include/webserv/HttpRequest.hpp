@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:54:36 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/15 17:39:41 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:29:21 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ class HttpRequest
 {
 private:
 	std::string	_method;
-	std::string	_resources;
+	std::string	_resource;
 	std::string	_version;
 	std::string	_request;
 public:
@@ -28,7 +28,7 @@ public:
 	HttpRequest& operator=(const HttpRequest&);
 
 	const std::string& method() const { return _method; }
-	const std::string& resources() const { return _resources; }
+	const std::string& resource() const { return _resource; }
 	const std::string& version() const { return _version; }
 	const std::string& request() const { return _request; }
 
