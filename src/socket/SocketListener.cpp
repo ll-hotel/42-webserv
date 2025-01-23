@@ -68,6 +68,7 @@ void SocketListener::listen()
 ClientSocket SocketListener::accept()
 {
 	ClientSocket client(_fd);
+
 	std::cerr << "connection on port " << _port << std::endl;
 	return client;
 }
@@ -96,7 +97,7 @@ ClientSocket::~ClientSocket()
 	close(_fd);
 }
 
-const struct sockaddr &ClientSocket::addr() const
+const struct sockaddr& ClientSocket::addr() const
 {
 	return _addr;
 }
