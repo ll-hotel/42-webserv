@@ -28,7 +28,7 @@ public:
 	HttpRequest& operator=(const HttpRequest&);
 
 	const std::string& method() const { return _method; }
-	const std::string& resource() const { return _resources; }
+	const std::string& resources() const { return _resources; }
 	const std::string& version() const { return _version; }
 	const std::string& request() const { return _request; }
 
