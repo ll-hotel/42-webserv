@@ -13,3 +13,9 @@
 
 # Misc
 webserv.conf
+.vscode/
+
+# Test
+
+*Test.cpp
+*test.cpp
