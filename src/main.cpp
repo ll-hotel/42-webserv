@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/28 18:27:48 by gcros            ###   ########.fr       */
+/*   Updated: 2025/01/28 18:44:26 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <poll.h>
 #include <map>
 
-int main(void)
+int main(int ac, char **av)
 {
 	// Config conf;
 
@@ -45,9 +45,17 @@ int main(void)
 	// 	std::cout << "\n\tport: " << srv.getPort();
 	// 	std::cout << "\n}" << std::endl;
 	// }
+	if (ac > 2)
+	{
+		std::cout << "to many args" << std::endl;
+		return 1;
+	}
+	std::string	file_path = "webserv.conf";
+	if (ac == 2)
+		file_path = av[1];
 	try
 	{
-		Webserv webserv("webserv.conf");
+		Webserv webserv(file_path);
 
 
 		// std::vector<SocketListener*> listeners;
