@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/28 18:17:22 by gcros            ###   ########.fr       */
+/*   Updated: 2025/01/28 18:27:48 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int main(void)
 			std::cout << "polling" << std::endl;
 			int nbr_action = poll(fds.data(), fds.size(), -1);
 			if (nbr_action < 0)
-				throw WebservException("idk wtf");
+				throw WebservException("poll: fail");
 			int	socket_count = 0;
 			for (int nbr_action_count = 0; nbr_action_count < nbr_action; nbr_action_count++)
 			{
@@ -83,7 +83,7 @@ int main(void)
 						break ;
 				SocketListener *socket_action = listener_map[fds[socket_count].fd];
 				if (socket_action == NULL)
-					throw WebservException("bite");
+					throw WebservException("socketListener not found");
 				ClientSocket client = socket_action->accept();
 				std::string request = client.recv();
 				std::cout << "--- Request ---\n" << request << std::endl;
