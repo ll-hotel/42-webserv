@@ -5,64 +5,45 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 21:21:15 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/12/16 05:29:51 by ll-hotel         ###   ########.fr       */
+/*   Created: 2025/01/28 16:20:06 by ll-hotel          #+#    #+#             */
+/*   Updated: 2025/01/28 18:54:45 by ll-hotel         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/Config.hpp"
-#include "webserv/parsing.hpp"
-#include <cctype>
-#include <cerrno>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <string>
+#include "Token.hpp"
 
-extern std::string read_file(const std::string &file_path);
-extern ConfigToken::Vector lexer(const std::string &content);
-
-Config::Config() throw()
+Config::Config()
 {
 }
 
-Config::Config(const std::string &file_path)
+Config::Config()
 {
-	const std::string content = read_file(file_path);
-	const ConfigToken::Vector tokens = lexer(content);
-	ConfigToken::Vector::const_iterator it;
-
-	for (it = tokens.begin(); it != tokens.end(); ++it)
-		_servers.push_back(Config::Server(it));
+	_do_directory_listing = false;
+	_do_post = false;
+	_do_get = false;
+	_do_upload = false;
 }
 
-Config::Config(const Config &config) throw()
+Config::Config(const Config &other)
 {
-	*this = config;
+	*this = other;
 }
 
-Config& Config::operator=(const Config &other) throw()
+Config& Config::operator=(const Config &other)
 {
-	_servers = other._servers;
+	_host = other._host;
+	_root = other._root;
+	_index = other._index;
 	_error_pages = other._error_pages;
-	_max_client_body_size = other._max_client_body_size;
+	_locations = other._locations;
+	_allowed_cgi = other._allowed_cgi;
+	_body_size = other._body_size;
+	_port = other._port;
+	_do_directory_listing = other._do_directory_listing;
+	_do_post = other._do_post;
+	_do_get = other._do_get;
+	_do_upload = other._do_upload;
+	_upload_dir = other._upload_dir;
 	return *this;
-}
-
-Config::~Config() throw()
-{
-}
-
-const std::vector<Config::Server>& Config::getServers()
-{
-	return _servers;
-}
-
-const std::map<uint16_t, std::string>& Config::getErrorPages()
-{
-	return _error_pages;
-}
-
-size_t Config::getMaxClientBodySize()
-{
-	return _max_client_body_size;
 }

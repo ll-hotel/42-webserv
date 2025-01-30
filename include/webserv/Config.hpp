@@ -6,76 +6,47 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 21:00:43 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/12/16 05:28:14 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/01/28 17:32:09 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WEBSERV_CONFIG_HPP
-#define WEBSERV_CONFIG_HPP
-#include "webserv/Exception.hpp"
-#include "webserv/parsing.hpp"
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
+#include <fstream>
 #include <map>
-#include <stdint.h>
 #include <string>
 #include <vector>
 
 class Config {
 public:
-	class Server {
-	private:
-		uint16_t _port;
-		std::string _host;
-		std::vector<std::string> _server_names;
-		// TODO: ERROR PAGES
-		// error_page 404 ./404_page.html
-		// TODO: ROUTES
-		// class RedirectionRoute {
-		// public:
-		// 	std::vector<std::string> route_methods;
-		// 	std::string redirection_url;
-		// 	std::string root_dir;
-		// 	bool do_directory_listing;
-		// 	std::string default_dir_file;
-		// 	// TODO: CGI
-		// 	// std::string cgi_extensions;
-		// 	std::string http_methods;
-		// 	bool do_file_upload;
-		// 	std::string file_save_dir;
-		// };
-		// std::vector<RedirectionRoute> routes;
-		void __use_token(ConfigToken::Vector::const_iterator &tok);
-
-	public:
-		Server();
-		Server(ConfigToken::Vector::const_iterator &it);
-                Server& operator=(const Server &other) throw();
-
-		uint16_t getPort() const;
-		const std::string& getHost() const;
-		const std::vector<std::string>& getServerNames() const;
+	class Location {
+		std::string root;
+		std::string alias;
+		bool do_post;
+		bool do_get;
 	};
 
 private:
-	std::vector<Server> _servers;
-	std::map<uint16_t, std::string> _error_pages;
-	size_t _max_client_body_size;
+	std::string _host;
+	std::string _root;
+	std::string _index;
+	std::map<int, std::string> _error_pages;
+	std::vector<Location> _locations;
+	std::vector<std::string> _allowed_cgi;
+	size_t _body_size;
+	int _port;
+	bool _do_directory_listing;
+	bool _do_post;
+	bool _do_get;
+	bool _do_upload;
+	std::string _upload_dir;
 
 public:
-	Config() throw();
-	Config(const std::string &file_path);
-	Config(const Config&) throw();
-	Config& operator=(const Config&) throw();
-	~Config() throw();
-
-	const std::vector<Server>& getServers();
-	const std::map<uint16_t, std::string>& getErrorPages();
-	size_t getMaxClientBodySize();
-
-	class FileErrorException : public WebservException {
-		FileErrorException(const std::string &str):
-			WebservException(str)
-		{}
-	};
+	Config(std::ifstream &file);
+	Config();
+	Config(const Config &other);
+	Config& operator=(const Config &other);
+	~Config();
 };
 
 #endif
