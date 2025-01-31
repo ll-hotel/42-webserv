@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:02:10 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/28 17:08:51 by gcros            ###   ########.fr       */
+/*   Updated: 2025/01/31 17:09:44 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ public:
 	SocketListener(int port);
 	~SocketListener();
 	/*                                     utils                                  */
-	ClientSocket accept();
+	ClientSocket *accept();
 	/*                                     get/set                                */
 	bool	has_failed() const;
 	int32_t	getFd() const;
