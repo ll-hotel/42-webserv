@@ -6,19 +6,15 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/31 17:47:53 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/04 00:40:58 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "webserv/SocketListener.hpp"
 #include "webserv/Config.hpp"
 #include "webserv/Exception.hpp"
-#include "webserv/HttpRequest.hpp"
-#include "webserv/HttpResponse.hpp"
 #include "webserv/Webserv.hpp"
 #include <iostream>
 #include <vector>
-#include <poll.h>
 #include <map>
 
 int main(int ac, char **av)
@@ -59,8 +55,9 @@ int main(int ac, char **av)
 
 		while (1)
 		{
-			webserv.acceptClient();
+			webserv.acceptClients();
 			std::cout << webserv.getClientList().size() << std::endl;
+			webserv.resolveClients();
 		}
 		// std::vector<SocketListener*> listeners;
 		// for (size_t i = 0; i < conf.getServers().size(); i += 1) {
