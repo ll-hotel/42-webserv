@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:12:52 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/01/28 18:39:15 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/08 10:36:40 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ Token::Token(const std::string &value)
 	_type = WORD;
 	if (value.length() == 1) {
 		switch (value[0]) {
-			case '{':
+			case TOKEN_CONTEXT_START:
 				_type = Token::CONTEXT_START;
 				break;
-			case '}':
+			case TOKEN_CONTEXT_END:
 				_type = Token::CONTEXT_END;
 				break;
-			case ';':
+			case TOKEN_ARG_END:
 				_type = Token::ARG_END;
 				break;
 		}
