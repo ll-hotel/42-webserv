@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:46:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/04 00:41:35 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/13 00:44:04 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,12 @@ void Webserv::acceptClients()
 
 void Webserv::resolveClients()
 {
-	for (int clients_count = this->_clientsList.size(); clients_count ;clients_count--)
+	for (size_t clients_count = this->_clientsList.size(); clients_count ;clients_count--)
 	{
-		struct s_client_handler &client = this->_clientsList.front();
+		struct s_client_handler client = this->_clientsList.front();
+		this->_clientsList.pop();
 		std::cout << "Client on " << client.client->fd() << std::endl;
+		this->_clientsList.push(client);
 	}
 }
 Webserv::~Webserv()
