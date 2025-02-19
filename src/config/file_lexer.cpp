@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_file.cpp                                      :+:      :+:    :+:   */
+/*   file_lexer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 13:00:58 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/01/28 18:55:06 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:33:57 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <string>
 #include <vector>
 
-static std::string read_word(std::ifstream &file, const std::string &delim)
+static std::string read_word(std::ifstream &file)
 {
 	std::string w;
 	char c;
@@ -25,8 +25,8 @@ static std::string read_word(std::ifstream &file, const std::string &delim)
 		return w;
 	do {
 		file.read(&c, 1);
-	} while (delim.find(c) != std::string::npos && file);
-	while (delim.find(c) == std::string::npos && file) {
+	} while (file && std::isspace(c));
+	while (file && !std::isspace(c)) {
 		w += c;
 		file.read(&c, 1);
 	}
@@ -41,28 +41,34 @@ static void push_token(std::vector<Token> &tokens, std::string &value)
 	}
 }
 
+static std::vector<std::string> read_words_and_split(std::ifstream &file)
+{
+	std::vector<std::string> split;
+
+	while (file) {
+		const std::string word = read_word(file);
+		const std::string *s_ptr = &word;
+		std::string suffix;
+		for (size_t pos = 0; pos < word.size(); pos += 1) {
+			size_t len = s_ptr->find_first_of("{};");
+			if (len == 0)
+				len += 1;
+			split.push_back(s_ptr->substr(0, len));
+			if (len != std::string::npos) {
+				suffix = s_ptr->substr(len);
+				s_ptr = &suffix;
+			}
+			pos += len - 1;
+		}
+	}
+	return split;
+}
+
 std::vector<Token> file_lexer(std::ifstream &file)
 {
-	const std::string spaces = " \t\r\n";
-	const std::string specials = "{};";
-	std::string word;
+	const std::vector<std::string> identifiers = read_words_and_split(file);
 	std::vector<Token> tokens;
-
-	word = read_word(file, spaces);
-	while (!word.empty()) {
-		std::string token_value;
-
-		for (size_t i = 0; i < word.length(); i += 1) {
-			if (specials.find(word[i]) == std::string::npos) {
-				token_value += word[i];
-			} else {
-				push_token(tokens, token_value);
-				token_value += word[i];
-				push_token(tokens, token_value);
-			}
-		}
-		push_token(tokens, token_value);
-		word = read_word(file, spaces);
-	}
+	for (size_t i = 0; i < identifiers.size(); i += 1)
+		tokens.push_back(Token(identifiers[i]));
 	return tokens;
 }

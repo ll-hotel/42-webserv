@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:03:55 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/08 13:21:21 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:31:12 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,12 @@ ServerConfig::ServerConfig(const std::vector<Token> &tokens)
 	if (tokens.front().type() != Token::CONTEXT_START)
 		WS_THROW("unexpected token `" + tokens.front().value() +
 				"': expected context start");
+	if (tokens.back().type() != Token::CONTEXT_END)
+		WS_THROW("missing end of context");
 	*this = ServerConfig();
 	size_t i;
-	for (i = 1; i < tokens.size(); i += 1) {
+	for (i = 1; i + 1 < tokens.size(); i += 1) {
 		const Token &token = tokens[i];
-
-		if (token.type() == Token::CONTEXT_END)
-			break;
 		ServerConfigKeyType key = which_key_type(token.value());
 		if (i + 1 >= tokens.size())
 			WS_THROW("missing argument for key `" + \
@@ -82,7 +81,7 @@ ServerConfig::ServerConfig(const std::vector<Token> &tokens)
 		if (tokens[i].type() != Token::ARG_END)
 			WS_THROW("missing end of line");
 	}
-	if (i >= tokens.size())
+	if (tokens[i].type() != Token::CONTEXT_END)
 		WS_THROW("missing end of context");
 }
 
