@@ -6,57 +6,20 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:12:52 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/08 10:36:40 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:31:46 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Token.hpp"
 
-Token::Token(const std::string &value)
+Token::Token(const std::string &str) : type(WORD), value(str)
 {
-	_type = WORD;
-	if (value.length() == 1) {
-		switch (value[0]) {
-			case TOKEN_CONTEXT_START:
-				_type = Token::CONTEXT_START;
-				break;
-			case TOKEN_CONTEXT_END:
-				_type = Token::CONTEXT_END;
-				break;
-			case TOKEN_ARG_END:
-				_type = Token::ARG_END;
-				break;
-		}
-	}
-	_value = value;
-}
-
-Token::Token()
-{
-}
-
-Token::Token(const Token &other)
-{
-	*this = other;
-}
-
-Token& Token::operator=(const Token &other)
-{
-	_type = other.type();
-	_value = other.value();
-	return *this;
-}
-
-Token::~Token() throw()
-{
-}
-
-const Token::Type& Token::type() const throw()
-{
-	return _type;
-}
-
-const std::string& Token::value() const throw()
-{
-	return _value;
+        if (value.length() == 1) {
+                switch (value[0]) {
+                case BRACK_LEFT:
+                case BRACK_RIGHT:
+                case SEMI:
+                        type = (Type)value[0];
+                }
+        }
 }

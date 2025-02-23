@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:03:55 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/19 16:31:12 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:33:40 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static ServerConfigKeyType which_key_type(const Token &token) {
 		key_list["upload_dir"] = UPLOAD_DIR;
 	}
 	std::map<std::string, ServerConfigKeyType>::const_iterator key =
-		key_list.find(token.value());
+		key_list.find(token.value);
 	if (key != key_list.end())
 		return key->second;
 	return INVALID;
@@ -64,24 +64,24 @@ ServerConfig::ServerConfig(const std::vector<Token> &tokens)
 {
 	if (tokens.empty())
 		WS_THROW("empty token list!");
-	if (tokens.front().type() != Token::CONTEXT_START)
-		WS_THROW("unexpected token `" + tokens.front().value() +
+	if (tokens.front().type != Token::BRACK_LEFT)
+		WS_THROW("unexpected token `" + tokens.front().value +
 				"': expected context start");
-	if (tokens.back().type() != Token::CONTEXT_END)
+	if (tokens.back().type != Token::BRACK_RIGHT)
 		WS_THROW("missing end of context");
 	*this = ServerConfig();
 	size_t i;
 	for (i = 1; i + 1 < tokens.size(); i += 1) {
 		const Token &token = tokens[i];
-		ServerConfigKeyType key = which_key_type(token.value());
+		ServerConfigKeyType key = which_key_type(token.value);
 		if (i + 1 >= tokens.size())
 			WS_THROW("missing argument for key `" + \
-					token.value() + "'");
+					token.value + "'");
 		i = this->setVar(key, tokens, i);
-		if (tokens[i].type() != Token::ARG_END)
+		if (tokens[i].type != Token::SEMI)
 			WS_THROW("missing end of line");
 	}
-	if (tokens[i].type() != Token::CONTEXT_END)
+	if (tokens[i].type != Token::BRACK_RIGHT)
 		WS_THROW("missing end of context");
 }
 
@@ -89,7 +89,7 @@ size_t ServerConfig::setVar(int key_type, const std::vector<Token> &tokens, \
 		size_t i)
 {
 	if (key_type == INVALID)
-		WS_THROW("invalid key `" + tokens[i].value() + "'");
+		WS_THROW("invalid key `" + tokens[i].value + "'");
 	switch (key_type) {
 	case SERVER_NAME:
 		parse_server_name(_server_name, tokens, i);
