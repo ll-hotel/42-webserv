@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:03:55 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 18:59:37 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:11:03 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,6 @@ std::ostream &operator<<(std::ostream &stream, const ServerConfig &elem)
         stream << "do_get: " << (elem.do_get() ? "yes" : "no") << "\n";
         stream << "do_post: " << (elem.do_post() ? "yes" : "no") << "\n";
         stream << "do_upload: " << (elem.do_upload() ? "yes" : "no") << "\n";
-        stream << "upload_dir: " << elem.upload_dir() << "\n";
+        stream << "upload_dir: " << elem.upload_dir();
         return stream;
 }

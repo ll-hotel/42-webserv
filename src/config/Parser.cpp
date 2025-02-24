@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:46:33 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 18:33:51 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:09:27 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ std::vector<Parameter> Parser::parse()
         std::vector<Parameter> parameters;
 
         if (!peek().is_some())
-                WS_THROW("missing {");
+                WS_THROW("missing opening bracket");
         if (peek().value().type != Token::BRACK_LEFT)
                 WS_THROW("unexpected token `" + peek().value().value +
                          "': expected {");
@@ -46,9 +46,9 @@ std::vector<Parameter> Parser::parse()
                 std::vector<std::string> words;
                 while (peek().is_some() && peek().value().type == Token::WORD)
                         words.push_back(consume().value);
-                if (!peek().is_some())
+                if (!peek().is_some()) {
                         WS_THROW("unexpected end of file: missing semicolon");
-                else if (peek().value().type != Token::SEMI) {
+                } else if (peek().value().type != Token::SEMI) {
                         WS_THROW("unexpected token `" + consume().value +
                                  "': expected semicolon");
                 } else if (words.empty()) {

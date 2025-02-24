@@ -6,12 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:46:18 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 19:15:15 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:03:34 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <string>
+#include <fstream>
 
 class Token {
 public:
@@ -29,3 +30,5 @@ public:
         } type;
         std::string value;
 };
+
+std::ostream& operator<<(std::ostream&, const Token&);
