@@ -3,11 +3,10 @@ MAKEFLAGS := --no-print-directory
 Q := @
 
 RM := rm -fv
-CXX := c++
 
+CXX := c++
 CPPFLAGS := -MMD -MP
-CXXFLAGS := -Wall -Wextra
-CXXFLAGS := -Werror
+CXXFLAGS := -Wall -Wextra # -Werror
 CXXFLAGS += -std=c++98
 CXXFLAGS += -Iinclude
 
@@ -27,6 +26,10 @@ NAME := webserv
 
 .PHONY: all
 all: $(NAME)
+
+.PHONY: fsan
+fsan: CXXFLAGS += -fsanitize=leak,address
+fsan: all
 
 $(NAME): $(OBJS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(OBJS)

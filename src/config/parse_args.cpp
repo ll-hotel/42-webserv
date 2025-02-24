@@ -1,147 +1,92 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_args.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 11:56:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 17:34:40 by ll-hotel         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "parse_args.hpp"
-#include "Token.hpp"
+#include "webserv/parse_args.hpp"
 #include "webserv/Exception.hpp"
-#include "webserv/ServerConfig.hpp"
 #include <cstdlib>
-#include <map>
 
-static void expect(const std::vector<Token> &tokens, size_t &i, Token::Type t)
+void parse_server_name(const Parameter &parameter, std::string *server_name)
 {
-        if (i + 1 >= tokens.size())
-                WS_THROW("unexpected end of file");
-        i += 1;
-        if (tokens[i].type != t)
-                WS_THROW("unexpected token `" + tokens[i].value + "' after `" +
-                         tokens[i - 1].value + "'");
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for server_name");
+	*server_name = parameter.second[0];
+}
+void parse_host(const Parameter &parameter, std::string *host)
+{
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for host");
+	*host = parameter.second[0];
 }
 
-void parse_server_name(std::string &server_name,
-                       const std::vector<Token> &tokens, size_t &i)
+void parse_root(const Parameter &parameter, std::string *root)
 {
-        expect(tokens, i, Token::WORD);
-        server_name = tokens[i].value;
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for root");
+	*root = parameter.second[0];
 }
 
-void parse_host(std::string &host, const std::vector<Token> &tokens, size_t &i)
+void parse_index_page(const Parameter &parameter, std::string *index_page)
 {
-        expect(tokens, i, Token::WORD);
-        host = tokens[i].value;
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for index_page");
+	*index_page = parameter.second[0];
 }
 
-void parse_root(std::string &root, const std::vector<Token> &tokens, size_t &i)
+void parse_error_page(const Parameter &parameter,
+                      std::map<int, std::string> *error_pages)
 {
-        expect(tokens, i, Token::WORD);
-        root = tokens[i].value;
+        if (parameter.second.size() != 2)
+                WS_THROW("bad arguments for error_page");
+	int code = std::atoi(parameter.second[0].c_str());
+	(*error_pages)[code] = parameter.second[1];
 }
 
-void parse_index_page(std::string &index_page, const std::vector<Token> &tokens,
-                      size_t &i)
+void parse_location(const Parameter &parameter,
+                    std::vector<ServerConfig::Location> *locations)
 {
-        expect(tokens, i, Token::WORD);
-        index_page = tokens[i].value;
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for location");
+	(void)locations;
 }
 
-void parse_error_page(std::map<int, std::string> &error_pages,
-                      const std::vector<Token> &tokens, size_t &i)
+void parse_cgi(const Parameter &parameter, std::vector<std::string> *cgi)
 {
-        int code;
-
-        expect(tokens, i, Token::WORD);
-        code = std::atol(tokens[i].value.c_str());
-        i += 1;
-        if (i >= tokens.size())
-                WS_THROW("missing error page file for code " +
-                         tokens[i - 1].value);
-        if (tokens[i].type != Token::WORD)
-                WS_THROW("unexpected token `" + tokens[i].value + "' after `" +
-                         tokens[i - 1].value + "'");
-        error_pages[code] = tokens[i].value;
+        if (parameter.second.size() == 0)
+                WS_THROW("missing arguments for cgi");
+	for (size_t i = 0; i < parameter.second.size(); i += 1)
+		cgi->push_back(parameter.second[i]);
 }
 
-void parse_location(std::vector<ServerConfig::Location> &locations,
-                    const std::vector<Token> &tokens, size_t &i)
+void parse_body_size(const Parameter &parameter, size_t *body_size)
 {
-        WS_THROW("location TO DO!");
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for body_size");
+	*body_size = std::atol(parameter.second[0].c_str());
 }
 
-void parse_cgi(std::vector<std::string> &cgi, const std::vector<Token> &tokens,
-               size_t &i)
+void parse_port(const Parameter &parameter, int *port)
 {
-        static const std::string valid_cgis = "py";
-
-        do {
-                expect(tokens, i, Token::WORD);
-                if (valid_cgis.find(tokens[i].value) == std::string::npos)
-                        WS_THROW("invalid cgi `" + tokens[i].value + "'");
-                cgi.push_back(tokens[i].value);
-        } while (i + 1 < tokens.size() && tokens[i + 1].type != Token::SEMI);
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for port");
+	*port = std::atoi(parameter.second[0].c_str());
 }
 
-static bool is_number(const std::string &str)
+void parse_directory_listing(const Parameter &parameter,
+                             bool *directory_listing)
 {
-        for (size_t i = 0; i < str.size(); i += 1) {
-                if (!std::isdigit(str[i]))
-                        return false;
-        }
-        return true;
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for directory_listing");
+	*directory_listing = parameter.second[0] == "true" ? true : false;
 }
 
-void parse_body_size(size_t &body_size, const std::vector<Token> &tokens,
-                     size_t &i)
+void parse_methods(const Parameter &parameter,
+                   std::map<std::string, bool> *methods)
 {
-        expect(tokens, i, Token::WORD);
-        if (!is_number(tokens[i].value))
-                WS_THROW("body size: invalid value `" + tokens[i].value +
-                         "': expected a number");
-        body_size = std::atol(tokens[i].value.c_str());
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for methods");
+	(*methods)[parameter.second[0]] = true;
 }
 
-void parse_port(int &port, const std::vector<Token> &tokens, size_t &i)
+void parse_upload_dir(const Parameter &parameter, std::string *upload_dir)
 {
-        expect(tokens, i, Token::WORD);
-        if (!is_number(tokens[i].value))
-                WS_THROW("port: invalid value `" + tokens[i].value +
-                         "': expected a number");
-        port = std::atoi(tokens[i].value.c_str());
-}
-
-void parse_directory_listing(bool &directory_listing,
-                             const std::vector<Token> &tokens, size_t &i)
-{
-        expect(tokens, i, Token::WORD);
-        if (tokens[i].value != "false" && tokens[i].value != "true")
-                WS_THROW("invalid value " + tokens[i].value + " for key " +
-                         tokens[i - 1].value);
-        directory_listing = tokens[i].value == "true";
-}
-
-void parse_methods(std::map<std::string, bool> &methods,
-                   const std::vector<Token> &tokens, size_t &i)
-{
-        do {
-                expect(tokens, i, Token::WORD);
-                if (methods.find(tokens[i].value) == methods.end())
-                        WS_THROW("unknown method `" + tokens[i].value + "'");
-                else
-                        methods[tokens[i].value] = true;
-        } while (i + 1 < tokens.size() && tokens[i + 1].type != Token::SEMI);
-}
-
-void parse_upload_dir(std::string &upload_dir, const std::vector<Token> &tokens,
-                      size_t &i)
-{
-        expect(tokens, i, Token::WORD);
-        upload_dir = tokens[i].value;
+        if (parameter.second.size() > 1)
+                WS_THROW("too many arguments for updload_dir");
+	*upload_dir = parameter.second[0];
 }

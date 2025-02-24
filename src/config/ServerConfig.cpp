@@ -6,20 +6,19 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:03:55 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 17:33:40 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/23 18:59:37 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/ServerConfig.hpp"
-#include "Token.hpp"
-#include "parse_args.hpp"
 #include "webserv/Exception.hpp"
+#include "webserv/parse_args.hpp"
 #include <cstdlib>
 #include <string>
 #include <utility>
 #include <vector>
 
-enum ServerConfigKeyType {
+enum ServerConfigIdentifier {
         SERVER_NAME,
         HOST,
         ROOT,
@@ -36,9 +35,9 @@ enum ServerConfigKeyType {
         INVALID = MAX_KEY_TYPE + 1,
 };
 
-static ServerConfigKeyType which_key_type(const Token &token)
+static ServerConfigIdentifier which_identifier(const Token &token)
 {
-        static std::map<std::string, ServerConfigKeyType> key_list;
+        static std::map<std::string, ServerConfigIdentifier> key_list;
 
         if (key_list.empty()) {
                 key_list["server_name"] = SERVER_NAME;
@@ -54,82 +53,67 @@ static ServerConfigKeyType which_key_type(const Token &token)
                 key_list["methods"] = METHODS;
                 key_list["upload_dir"] = UPLOAD_DIR;
         }
-        std::map<std::string, ServerConfigKeyType>::const_iterator key =
+        std::map<std::string, ServerConfigIdentifier>::const_iterator key =
             key_list.find(token.value);
         if (key != key_list.end())
                 return key->second;
         return INVALID;
 }
 
-ServerConfig::ServerConfig(const std::vector<Token> &tokens)
+ServerConfig::ServerConfig(const std::vector<Parameter> &parameters)
 {
-        if (tokens.empty())
-                WS_THROW("empty token list!");
-        if (tokens.front().type != Token::BRACK_LEFT)
-                WS_THROW("unexpected token `" + tokens.front().value +
-                         "': expected context start");
-        if (tokens.back().type != Token::BRACK_RIGHT)
-                WS_THROW("missing end of context");
         *this = ServerConfig();
-        size_t i;
-        for (i = 1; i + 1 < tokens.size(); i += 1) {
-                const Token &token = tokens[i];
-                ServerConfigKeyType key = which_key_type(token.value);
-                if (i + 1 >= tokens.size())
-                        WS_THROW("missing argument for key `" + token.value +
-                                 "'");
-                i = this->setVar(key, tokens, i);
-                if (tokens[i].type != Token::SEMI)
-                        WS_THROW("missing end of line");
+        for (size_t i = 0; i < parameters.size(); i += 1) {
+                const Parameter &parameter = parameters[i];
+                if (parameter.second.empty())
+                        WS_THROW("missing argument for key `" +
+                                 parameter.first + "'");
+                this->setVar(parameter);
         }
-        if (tokens[i].type != Token::BRACK_RIGHT)
-                WS_THROW("missing end of context");
 }
 
-size_t ServerConfig::setVar(int key_type, const std::vector<Token> &tokens,
-                            size_t i)
+void ServerConfig::setVar(const Parameter &parameter)
 {
-        if (key_type == INVALID)
-                WS_THROW("invalid key `" + tokens[i].value + "'");
-        switch (key_type) {
+        switch (which_identifier(parameter.first)) {
+        case INVALID:
+                WS_THROW("invalid key `" + parameter.first + "'");
         case SERVER_NAME:
-                parse_server_name(_server_name, tokens, i);
+                parse_server_name(parameter, &_server_name);
                 break;
         case HOST:
-                parse_host(_host, tokens, i);
+                parse_host(parameter, &_host);
                 break;
         case ROOT:
-                parse_root(_root, tokens, i);
+                parse_root(parameter, &_root);
                 break;
         case INDEX_PAGE:
-                parse_index_page(_index_page, tokens, i);
+                parse_index_page(parameter, &_index_page);
                 break;
         case ERROR_PAGE:
-                parse_error_page(_error_pages, tokens, i);
+                parse_error_page(parameter, &_error_pages);
                 break;
         case LOCATION:
-                parse_location(_locations, tokens, i);
+                parse_location(parameter, &_locations);
                 break;
         case CGI:
-                parse_cgi(_allowed_cgi, tokens, i);
+                parse_cgi(parameter, &_allowed_cgi);
                 break;
         case BODY_SIZE:
-                parse_body_size(_body_size, tokens, i);
+                parse_body_size(parameter, &_body_size);
                 break;
         case PORT:
-                parse_port(_port, tokens, i);
+                parse_port(parameter, &_port);
                 break;
         case DIRECTORY_LISTING:
-                parse_directory_listing(_do_directory_listing, tokens, i);
+                parse_directory_listing(parameter, &_do_directory_listing);
                 break;
         case METHODS:
-                parse_methods(_methods, tokens, i);
+                parse_methods(parameter, &_methods);
                 break;
         case UPLOAD_DIR:
-                parse_upload_dir(_upload_dir, tokens, i);
+                parse_upload_dir(parameter, &_upload_dir);
                 break;
         }
-        return i + 1;
 }
 
 ServerConfig::ServerConfig()
@@ -186,15 +170,15 @@ const std::vector<std::string> &ServerConfig::allowed_cgi() const
 {
         return _allowed_cgi;
 }
-const size_t ServerConfig::body_size() const { return _body_size; }
-const int ServerConfig::port() const { return _port; }
-const bool ServerConfig::do_directory_listing() const
+size_t ServerConfig::body_size() const { return _body_size; }
+int ServerConfig::port() const { return _port; }
+bool ServerConfig::do_directory_listing() const
 {
         return _do_directory_listing;
 }
-const bool ServerConfig::do_post() const { return _methods.at("POST"); }
-const bool ServerConfig::do_get() const { return _methods.at("GET"); }
-const bool ServerConfig::do_upload() const { return !_upload_dir.empty(); }
+bool ServerConfig::do_post() const { return _methods.at("POST"); }
+bool ServerConfig::do_get() const { return _methods.at("GET"); }
+bool ServerConfig::do_upload() const { return !_upload_dir.empty(); }
 const std::string &ServerConfig::upload_dir() const { return _upload_dir; }
 
 std::ostream &operator<<(std::ostream &stream, const ServerConfig &elem)

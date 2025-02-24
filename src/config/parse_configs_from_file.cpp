@@ -6,12 +6,10 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:39:53 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 17:34:22 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/23 18:17:07 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Token.hpp"
-#include "Tokenizer.hpp"
 #include "webserv/Exception.hpp"
 #include "webserv/ServerConfig.hpp"
 #include <cerrno>
@@ -39,12 +37,12 @@ std::vector<ServerConfig> parse_configs_from_file(const std::string &filename)
                 while (end < tokens.size() &&
                        tokens[end].type != Token::BRACK_RIGHT)
                         end += 1;
-                if (end >= tokens.size())
-                        WS_THROW("missing context end");
                 end += 1;
-                std::vector<Token> config_tokens(tokens.begin() + start,
-                                                 tokens.begin() + end);
-                configurations.push_back(ServerConfig(config_tokens));
+                std::vector<Token> server_tokens(tokens.begin() + start,
+                                                 tokens.end() + end);
+                std::vector<Parameter> parameters =
+                    Parser(server_tokens).parse();
+                configurations.push_back(ServerConfig(parameters));
                 if (end - 1 < tokens.size())
                         end += 1;
         }

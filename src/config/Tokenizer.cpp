@@ -6,34 +6,11 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 15:54:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 16:44:03 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/23 18:59:48 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Tokenizer.hpp"
-
-template <typename T> Option<T>::Option() : _value(0) {}
-
-template <typename T> Option<T>::Option(const T &value) : _value(value) {}
-
-template <typename T> Option<T> &Option<T>::operator=(const Option &other)
-{
-        _value = other._value();
-        return *this;
-}
-
-template <typename T> Option<T>::~Option() {}
-
-template <typename T> bool Option<T>::is_some() const
-{
-        return _value != (T){0};
-}
-
-template <typename T> T &Option<T>::value() { return _value; }
-
-template <typename T> const T &Option<T>::value() const { return _value; }
-
-/*** Tokenizer ***/
+#include "webserv/Tokenizer.hpp"
 
 Tokenizer::Tokenizer() : _str(), _i(0) {}
 
@@ -41,7 +18,11 @@ Tokenizer::Tokenizer(const std::string &str) : _str(str), _i(0) {}
 
 Tokenizer::Tokenizer(const Tokenizer &other) : _str(other._str), _i(other._i) {}
 
-Tokenizer &Tokenizer::operator=(const Tokenizer &other) { return *this; }
+Tokenizer &Tokenizer::operator=(const Tokenizer &other) {
+	_str = other._str;
+	_i = other._i;
+	return *this;
+}
 
 Tokenizer::~Tokenizer() {}
 
@@ -49,7 +30,6 @@ static std::string read_token_str(Tokenizer &tokenizer)
 {
         static const std::string specials("{};");
         std::string w;
-        char c;
 
         if (!tokenizer.peek().is_some())
                 return w;

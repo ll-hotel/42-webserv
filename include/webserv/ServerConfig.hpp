@@ -6,18 +6,17 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 21:00:43 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/08 12:54:34 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/23 18:59:14 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
+#include "Parser.hpp"
 #include <map>
 #include <ostream>
 #include <string>
 #include <vector>
-
-class Token;
 
 class ServerConfig {
 public:
@@ -30,8 +29,8 @@ public:
 	public:
 		const std::string& root() const { return Location::_root; }
 		const std::string& alias() const { return Location::_alias; }
-		const bool do_post() const { return Location::_do_post; }
-		const bool do_get() const { return Location::_do_get; }
+		bool do_post() const { return Location::_do_post; }
+		bool do_get() const { return Location::_do_get; }
 	};
 
 private:
@@ -48,10 +47,10 @@ private:
 	bool _do_directory_listing;
 	std::string _upload_dir;
 
-	size_t setVar(int, const std::vector<Token>&, size_t);
+	void setVar(const Parameter &parameter);
 
 public:
-	ServerConfig(const std::vector<Token> &tokens);
+	ServerConfig(const std::vector<Parameter> &tokens);
 	ServerConfig();
 	ServerConfig(const ServerConfig &other);
 	ServerConfig& operator=(const ServerConfig &other);
@@ -64,12 +63,12 @@ public:
 	const std::map<int, std::string>& error_pages() const;
 	const std::vector<Location>& locations() const;
 	const std::vector<std::string>& allowed_cgi() const;
-	const size_t body_size() const;
-	const int port() const;
-	const bool do_directory_listing() const;
-	const bool do_post() const;
-	const bool do_get() const;
-	const bool do_upload() const;
+	size_t body_size() const;
+	int port() const;
+	bool do_directory_listing() const;
+	bool do_post() const;
+	bool do_get() const;
+	bool do_upload() const;
 	const std::string& upload_dir() const;
 };
 
