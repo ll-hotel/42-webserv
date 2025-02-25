@@ -10,7 +10,7 @@ CXXFLAGS := -Wall -Wextra # -Werror
 CXXFLAGS += -std=c++98
 CXXFLAGS += -Iinclude
 
-MODULES := config http_response httpRequest socket webserv 
+MODULES := config http_response httpRequest socket webserv logger
 OBJ_DIR := .obj
 SRC_DIR := src
 
