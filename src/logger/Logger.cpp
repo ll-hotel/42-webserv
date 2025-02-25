@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:59:48 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 15:09:53 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 16:05:53 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 
 Logger::Logger()
 {
-	this->_isSet = false;
+	this->m_isSet = false;
 }
 
-Logger::Logger(const std::string &file_name)
+Logger::Logger(const std::string &t_file_name)
 {
-	this->openOutFile(file_name);
-	this->_isSet = true;
+	this->openOutFile(t_file_name);
+	this->m_isSet = true;
 }
 
 Logger::~Logger()
@@ -32,27 +32,27 @@ Logger::~Logger()
 	this->close();
 }
 
-void Logger::log(Logger::e_log_level level, const std::string &message)
+void Logger::log(Logger::e_log_level t_level, const std::string &t_message)
 {
 	struct Logger::s_log_object log_object = {0};
 	time_t raw_time;
 	tm* timeinfo;
 
-	log_object.type = level;
-	log_object.message = message;
+	log_object.type = t_level;
+	log_object.message = t_message;
 	raw_time = time(0);
 	timeinfo = localtime(&raw_time);
 	strftime(log_object.str_time, 20, "%Y-%m-%d %H:%M:%S", timeinfo);
 	std::cout << log_object;
-	if (_isSet)
-		this->_outFile << log_object;
+	if (m_isSet)
+		this->m_outFile << log_object;
 }
 
-void Logger::open(const std::string &file_name)
+void Logger::open(const std::string &t_file_name)
 {
 	this->close();
-	openOutFile(file_name);
-	_isSet = true;
+	openOutFile(t_file_name);
+	m_isSet = true;
 }
 
 void Logger::open()
@@ -62,13 +62,13 @@ void Logger::open()
 
 void Logger::close()
 {
-	if (!_isSet)
+	if (!m_isSet)
 		return ;
-	_outFile.close();
-	_isSet = false;
+	m_outFile.close();
+	m_isSet = false;
 }
 
-static std::string level_to_string(Logger::e_log_level level)
+static std::string level_to_string(Logger::e_log_level t_level)
 {
 	std::string level_list[] = {
 		"INFO",
@@ -78,25 +78,25 @@ static std::string level_to_string(Logger::e_log_level level)
 		"UNKOWN"
 	};
 
-	if (level >= Logger::LOG_LEVEL_LEN)
+	if (t_level >= Logger::LOG_LEVEL_LEN)
 		return (level_list[Logger::LOG_LEVEL_LEN]);
-	return (level_list[level]);
+	return (level_list[t_level]);
 }
 
-void Logger::openOutFile(const std::string &file_name)
+void Logger::openOutFile(const std::string &t_file_name)
 {
-	this->_outFile.open(file_name.c_str(), std::fstream::app );
-	if (this->_outFile.bad() || !this->_outFile.is_open())
-		throw WebservException(std::string("logger: ") + file_name + ": " + strerror(errno));
+	this->m_outFile.open(t_file_name.c_str(), std::fstream::app );
+	if (this->m_outFile.bad() || !this->m_outFile.is_open())
+		throw WebservException(std::string("logger: ") + t_file_name + ": " + strerror(errno));
 	this->log(Logger::INFO, "---start log---");
 }
-std::ostream &operator<<(std::ostream &os, const Logger::s_log_object &log_object)
+std::ostream &operator<<(std::ostream &os, const Logger::s_log_object &t_log_object)
 {
 	std::ostringstream log_entry;
 
-	log_entry << "[" << log_object.str_time << "] "
-		<< level_to_string(log_object.type)
-		<< ": " << log_object.message
+	log_entry << "[" << t_log_object.str_time << "] "
+		<< level_to_string(t_log_object.type)
+		<< ": " << t_log_object.message
 		<< std::endl;
 	os << log_entry.str();
 	return (os);

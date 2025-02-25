@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:08:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 15:05:25 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 16:08:06 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ public:
 	};
 	
 	void	log(Logger::e_log_level level, const std::string& message);
-	bool	isSet() const {return _isSet;}
+	bool	isSet() const {return m_isSet;}
 	void	open(const std::string &);
 	void	open();
 	void	close();
@@ -53,8 +53,8 @@ public:
 	Logger(Logger&);
 	void	openOutFile(const std::string&);
 	
-	std::ofstream	_outFile;
-	bool		_isSet;
+	std::ofstream	m_outFile;
+	bool		m_isSet;
 };
 
 std::ostream &operator<<(std::ostream &os, const Logger::s_log_object &log_object);
