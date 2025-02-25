@@ -6,13 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:03:55 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/24 16:11:03 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:14:37 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/ServerConfig.hpp"
 #include "webserv/Exception.hpp"
-#include "webserv/parse_args.hpp"
+#include "webserv/use_parameter.hpp"
 #include <cstdlib>
 #include <string>
 #include <utility>
@@ -78,40 +78,40 @@ void ServerConfig::setVar(const Parameter &parameter)
         case INVALID:
                 WS_THROW("invalid key `" + parameter.first + "'");
         case SERVER_NAME:
-                parse_server_name(parameter, &_server_name);
+                change_server_name(parameter, &_server_name);
                 break;
         case HOST:
-                parse_host(parameter, &_host);
+                change_host(parameter, &_host);
                 break;
         case ROOT:
-                parse_root(parameter, &_root);
+                change_root(parameter, &_root);
                 break;
         case INDEX_PAGE:
-                parse_index_page(parameter, &_index_page);
+                change_index_page(parameter, &_index_page);
                 break;
         case ERROR_PAGE:
-                parse_error_page(parameter, &_error_pages);
+                change_error_page(parameter, &_error_pages);
                 break;
         case LOCATION:
-                parse_location(parameter, &_locations);
+                change_location(parameter, &_locations);
                 break;
         case CGI:
-                parse_cgi(parameter, &_allowed_cgi);
+                change_cgi(parameter, &_allowed_cgi);
                 break;
         case BODY_SIZE:
-                parse_body_size(parameter, &_body_size);
+                change_body_size(parameter, &_body_size);
                 break;
         case PORT:
-                parse_port(parameter, &_port);
+                change_port(parameter, &_port);
                 break;
         case DIRECTORY_LISTING:
-                parse_directory_listing(parameter, &_do_directory_listing);
+                change_directory_listing(parameter, &_do_directory_listing);
                 break;
         case METHODS:
-                parse_methods(parameter, &_methods);
+                change_methods(parameter, &_methods);
                 break;
         case UPLOAD_DIR:
-                parse_upload_dir(parameter, &_upload_dir);
+                change_upload_dir(parameter, &_upload_dir);
                 break;
         }
 }

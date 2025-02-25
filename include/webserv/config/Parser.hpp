@@ -15,7 +15,7 @@
 #include "Tokenizer.hpp"
 #include <utility>
 
-typedef std::pair<std::string, std::vector<std::string> > Parameter;
+typedef std::pair<std::string, std::vector<std::string>> Parameter;
 
 class Parser
 {

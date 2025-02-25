@@ -11,16 +11,17 @@
 /* ************************************************************************** */
 
 #pragma once
-#include <string>
 #include <fstream>
+#include <string>
 
-class Token {
+class Token
+{
 public:
-	Token();
+        Token();
         Token(const std::string &value);
-	Token(const Token&);
-	Token& operator=(const Token&);
-	~Token();
+        Token(const Token &);
+        Token &operator=(const Token &);
+        ~Token();
 
         enum Type {
                 WORD,
@@ -31,4 +32,4 @@ public:
         std::string value;
 };
 
-std::ostream& operator<<(std::ostream&, const Token&);
+std::ostream &operator<<(std::ostream &, const Token &);
