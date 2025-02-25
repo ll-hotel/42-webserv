@@ -1,4 +1,4 @@
-#include "webserv/use_parameter.hpp"
+#include "webserv/config/use_parameter.hpp"
 #include "webserv/Exception.hpp"
 #include <cstdlib>
 

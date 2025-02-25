@@ -6,16 +6,19 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:40:52 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 17:46:48 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:21:08 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "Tokenizer.hpp"
+#include "Option.hpp"
+#include "Token.hpp"
+#include <string>
 #include <utility>
+#include <vector>
 
-typedef std::pair<std::string, std::vector<std::string>> Parameter;
+typedef std::pair<std::string, std::vector<std::string> > Parameter;
 
 class Parser
 {

@@ -6,13 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:03:55 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 15:14:37 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:21:32 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/ServerConfig.hpp"
 #include "webserv/Exception.hpp"
-#include "webserv/use_parameter.hpp"
+#include "webserv/config/use_parameter.hpp"
 #include <cstdlib>
 #include <string>
 #include <utility>

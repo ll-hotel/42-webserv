@@ -6,11 +6,11 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:46:33 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/24 16:09:27 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:21:20 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "webserv/Parser.hpp"
+#include "webserv/config/Parser.hpp"
 #include "webserv/Exception.hpp"
 
 Parser::Parser() : _tokens(), _i(0) {}

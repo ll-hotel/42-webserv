@@ -6,13 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 21:00:43 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 18:59:14 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:19:44 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
-#include "Parser.hpp"
+#include "config/Parser.hpp"
 #include <map>
 #include <ostream>
 #include <string>

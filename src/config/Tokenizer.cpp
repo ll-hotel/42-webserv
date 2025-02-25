@@ -6,11 +6,11 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 15:54:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/24 14:48:49 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:22:02 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "webserv/Tokenizer.hpp"
+#include "webserv/config/Tokenizer.hpp"
 
 Tokenizer::Tokenizer() : _str(), _i(0) {}
 
