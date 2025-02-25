@@ -16,7 +16,10 @@ Tokenizer::Tokenizer() : m_str(), m_i(0) {}
 
 Tokenizer::Tokenizer(const std::string &str) : m_str(str), m_i(0) {}
 
-Tokenizer::Tokenizer(const Tokenizer &other) : m_str(other.m_str), m_i(other.m_i) {}
+Tokenizer::Tokenizer(const Tokenizer &other)
+        : m_str(other.m_str), m_i(other.m_i)
+{
+}
 
 Tokenizer &Tokenizer::operator=(const Tokenizer &other)
 {

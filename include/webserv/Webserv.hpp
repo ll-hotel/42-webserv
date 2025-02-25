@@ -11,45 +11,44 @@
 /* ************************************************************************** */
 
 #ifndef WEBSERV_HPP
-# define WEBSERV_HPP
+#define WEBSERV_HPP
 
-#include <string>
 #include <queue>
+#include <string>
 #include <sys/epoll.h>
 
 #include "webserv/ServerConfig.hpp"
 #include "webserv/SocketListener.hpp"
 
-# define DEFAULT_POLL_TIMEOUT 500
+#define DEFAULT_POLL_TIMEOUT 500
 
-struct s_client_handler
-{
-	ClientSocket	*client;
-	struct epoll_event	eevents;
+struct s_client_handler {
+        ClientSocket *client;
+        struct epoll_event eevents;
 };
 
 class Webserv
 {
 
 public:
-	Webserv(const std::string &file_name);
-	const std::vector<SocketListener *> &getListeners() const;
-	const std::queue<struct s_client_handler>	&getClientList() const;
-	void	acceptClients();
-	void	resolveClients();
-	const std::vector<ServerConfig>	&getServerConfig() const;
-	~Webserv();
+        Webserv(const std::string &file_name);
+        const std::vector<SocketListener *> &getListeners() const;
+        const std::queue<struct s_client_handler> &getClientList() const;
+        void acceptClients();
+        void resolveClients();
+        const std::vector<ServerConfig> &getServerConfig() const;
+        ~Webserv();
+
 private:
-	Webserv();
-	Webserv(const Webserv &);
-	Webserv operator=(const Webserv &);
+        Webserv();
+        Webserv(const Webserv &);
+        Webserv operator=(const Webserv &);
 
-	std::vector<ServerConfig> 		m_serverConfig;
-	std::vector<SocketListener *>		m_listeners;
-	int					m_epollFd;
-	size_t					m_epollSize;
-	std::queue<struct s_client_handler>	m_clientsList;
+        std::vector<ServerConfig> m_serverConfig;
+        std::vector<SocketListener *> m_listeners;
+        int m_epollFd;
+        size_t m_epollSize;
+        std::queue<struct s_client_handler> m_clientsList;
 };
-
 
 #endif

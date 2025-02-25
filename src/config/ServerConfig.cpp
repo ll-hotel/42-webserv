@@ -172,10 +172,7 @@ const std::vector<std::string> &ServerConfig::allowedCgi() const
 }
 size_t ServerConfig::bodySize() const { return m_bodySize; }
 int ServerConfig::port() const { return m_port; }
-bool ServerConfig::doDirectoryListing() const
-{
-        return m_doDirectoryListing;
-}
+bool ServerConfig::doDirectoryListing() const { return m_doDirectoryListing; }
 bool ServerConfig::doPost() const { return m_methods.at("POST"); }
 bool ServerConfig::doGet() const { return m_methods.at("GET"); }
 bool ServerConfig::doUpload() const { return !m_uploadDir.empty(); }
@@ -203,8 +200,8 @@ std::ostream &operator<<(std::ostream &stream, const ServerConfig &elem)
                 stream << "        alias: " << iter->alias() << "\n";
                 stream << "        do_get: " << (iter->doGet() ? "yes" : "no")
                        << "\n";
-                stream << "        do_post: "
-                       << (iter->doPost() ? "yes" : "no") << "\n";
+                stream << "        do_post: " << (iter->doPost() ? "yes" : "no")
+                       << "\n";
         }
         stream << "}\n";
         stream << "allowed_cgi : {\n";

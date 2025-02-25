@@ -31,6 +31,10 @@ all: $(NAME)
 fsan: CXXFLAGS += -fsanitize=leak,address
 fsan: all
 
+.PHONY: format
+format:
+	find . -regex '.*\.[ch]pp' -exec clang-format -i '{}' \;
+
 $(NAME): $(OBJS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(OBJS)
 

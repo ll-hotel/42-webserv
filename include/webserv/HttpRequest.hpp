@@ -11,29 +11,30 @@
 /* ************************************************************************** */
 
 #ifndef HTTPREQUEST_HPP
-# define HTTPREQUEST_HPP
-# include <string>
+#define HTTPREQUEST_HPP
+#include <string>
 
 class HttpRequest
 {
 private:
-	std::string	_method;
-	std::string	_resource;
-	std::string	_version;
-	std::string	_request;
+        std::string _method;
+        std::string _resource;
+        std::string _version;
+        std::string _request;
+
 public:
-	HttpRequest();
-	HttpRequest(const HttpRequest&);
-	HttpRequest(const std::string &request);
-	HttpRequest& operator=(const HttpRequest&);
+        HttpRequest();
+        HttpRequest(const HttpRequest &);
+        HttpRequest(const std::string &request);
+        HttpRequest &operator=(const HttpRequest &);
 
-	const std::string& method() const { return _method; }
-	const std::string& resource() const { return _resource; }
-	const std::string& version() const { return _version; }
-	const std::string& request() const { return _request; }
+        const std::string &method() const { return _method; }
+        const std::string &resource() const { return _resource; }
+        const std::string &version() const { return _version; }
+        const std::string &request() const { return _request; }
 
-	/* For debug purposes only */
-	void print();
+        /* For debug purposes only */
+        void print();
 };
 
 #endif

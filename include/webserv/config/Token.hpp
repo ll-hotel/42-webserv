@@ -13,8 +13,7 @@
 #pragma once
 #include <string>
 
-struct Token
-{
+struct Token {
 public:
         Token();
         Token(const std::string &value);
