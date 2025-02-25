@@ -3,15 +3,14 @@ MAKEFLAGS := --no-print-directory
 Q := @
 
 RM := rm -fv
-CXX := c++
 
+CXX := c++
 CPPFLAGS := -MMD -MP
-CXXFLAGS := -Wall -Wextra
-CXXFLAGS := -Werror
+CXXFLAGS := -Wall -Wextra # -Werror
 CXXFLAGS += -std=c++98
 CXXFLAGS += -Iinclude
 
-MODULES := config http_response httpRequest socket logger
+MODULES := config http_response httpRequest socket webserv logger
 OBJ_DIR := .obj
 SRC_DIR := src
 
@@ -28,10 +27,14 @@ NAME := webserv
 .PHONY: all
 all: $(NAME)
 
+.PHONY: fsan
+fsan: CXXFLAGS += -fsanitize=leak,address
+fsan: all
+
 $(NAME): $(OBJS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(OBJS)
 
-$(OBJ_DIR)/%.o:: $(SRC_DIR)/%.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(Q)mkdir -p $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
 

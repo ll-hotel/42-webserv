@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:22:26 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/22 15:43:30 by gcros            ###   ########.fr       */
+/*   Updated: 2025/01/31 17:09:31 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ void SocketListener::listen()
 		WS_THROW(std::string("socket listen fail: ") + strerror(errno));
 }
 
-ClientSocket SocketListener::accept()
+ClientSocket *SocketListener::accept()
 {
-	ClientSocket client(_fd);
+	ClientSocket *client = new ClientSocket(_fd);
 
 	std::cerr << "connection on port " << _port << std::endl;
 	return client;
@@ -78,7 +78,11 @@ bool SocketListener::has_failed() const
 	return _failed;
 }
 
-// TODO
+int32_t SocketListener::getFd() const
+{
+	return _fd;
+}
+
 bool SocketListener::poll() const
 {
 	return true;
