@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:08:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 10:47:57 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 12:21:19 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <ctime>
 #include <queue>
 #include <fstream>
+#include "webserv/Exception.hpp"
 
 class Logger
 {
@@ -47,6 +48,7 @@ public:
 private:
 	std::queue<struct s_log_object> _messageQueue;
 	Logger(Logger&);
+	void	openOutFile(const std::string&);
 	Logger& operator=(Logger&);
 
 	std::ofstream	_outFile;

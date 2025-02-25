@@ -6,32 +6,29 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:59:48 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 11:18:21 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 12:24:35 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/Logger.hpp"
 #include <sstream>
 #include <iostream>
+#include <cstring>
+#include <cerrno>
 
 Logger::Logger()
 {
-	this->_outFile.exceptions(this->_outFile.badbit);
-	this->_outFile.open("log.txt", std::fstream::out | std::fstream::app );
-	this->log(Logger::INFO, "---start log---");
-	this->flush();
+	this->openOutFile("log.log");
 }
 
 Logger::Logger(const std::string &file_name)
 {
-	this->_outFile.exceptions(this->_outFile.badbit);
-	this->_outFile.open(file_name.c_str(), std::fstream::out | std::fstream::app );
-	this->log(Logger::INFO, "---start log---");
-	this->flush();
+	this->openOutFile(file_name);
 }
 
 Logger::~Logger()
 {
+	this->_outFile.flush();
 	this->_outFile.close();
 }
 
@@ -73,8 +70,18 @@ void Logger::flush()
 		std::cout << log_object;
 		this->_outFile << log_object;
 	}
+	this->_outFile.flush();
+	std::cout.flush();
 }
 
+void Logger::openOutFile(const std::string &file_name)
+{
+	this->_outFile.open(file_name.c_str(), std::fstream::app );
+	if (this->_outFile.bad() || !this->_outFile.is_open())
+		throw WebservException(std::string("logger: ") + file_name + ": " + strerror(errno));
+	this->log(Logger::INFO, "---start log---");
+	this->flush();
+}
 std::ostream &operator<<(std::ostream &os, const Logger::s_log_object &log_object)
 {
 	std::ostringstream log_entry;
