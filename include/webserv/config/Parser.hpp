@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:40:52 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 15:21:08 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:57:04 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ public:
 private:
         Parser &operator=(const Parser &);
 
-        const std::vector<Token> _tokens;
-        size_t _i;
+        const std::vector<Token> m_tokens;
+        size_t m_i;
 };

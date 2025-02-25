@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 21:00:43 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 15:19:44 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:06:00 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,31 @@ public:
         class Location
         {
         private:
-                std::string _root;
-                std::string _alias;
-                bool _do_post;
-                bool _do_get;
+                std::string m_root;
+                std::string m_alias;
+                bool m_doPost;
+                bool m_doGet;
 
         public:
-                const std::string &root() const { return Location::_root; }
-                const std::string &alias() const { return Location::_alias; }
-                bool do_post() const { return Location::_do_post; }
-                bool do_get() const { return Location::_do_get; }
+                const std::string &root() const { return Location::m_root; }
+                const std::string &alias() const { return Location::m_alias; }
+                bool doPost() const { return Location::m_doPost; }
+                bool doGet() const { return Location::m_doGet; }
         };
 
 private:
-        std::string _server_name;
-        std::string _host;
-        std::string _root;
-        std::string _index_page;
-        std::map<int, std::string> _error_pages;
-        std::vector<Location> _locations;
-        std::vector<std::string> _allowed_cgi;
-        std::map<std::string, bool> _methods;
-        size_t _body_size;
-        int _port;
-        bool _do_directory_listing;
-        std::string _upload_dir;
+        std::string m_serverName;
+        std::string m_host;
+        std::string m_root;
+        std::string m_indexPage;
+        std::map<int, std::string> m_errorPages;
+        std::vector<Location> m_locations;
+        std::vector<std::string> m_allowedCgi;
+        std::map<std::string, bool> m_methods;
+        size_t m_bodySize;
+        int m_port;
+        bool m_doDirectoryListing;
+        std::string m_uploadDir;
 
         void setVar(const Parameter &parameter);
 
@@ -59,20 +59,20 @@ public:
         ServerConfig &operator=(const ServerConfig &other);
         ~ServerConfig();
 
-        const std::string &server_name() const;
+        const std::string &serverName() const;
         const std::string &host() const;
         const std::string &root() const;
-        const std::string &index_page() const;
-        const std::map<int, std::string> &error_pages() const;
+        const std::string &indexPage() const;
+        const std::map<int, std::string> &errorPages() const;
         const std::vector<Location> &locations() const;
-        const std::vector<std::string> &allowed_cgi() const;
-        size_t body_size() const;
+        const std::vector<std::string> &allowedCgi() const;
+        size_t bodySize() const;
         int port() const;
-        bool do_directory_listing() const;
-        bool do_post() const;
-        bool do_get() const;
-        bool do_upload() const;
-        const std::string &upload_dir() const;
+        bool doDirectoryListing() const;
+        bool doPost() const;
+        bool doGet() const;
+        bool doUpload() const;
+        const std::string &uploadDir() const;
 };
 
 std::ostream &operator<<(std::ostream &, const ServerConfig &);

@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 15:38:47 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/23 18:57:44 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:58:57 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ public:
 private:
         Tokenizer &operator=(const Tokenizer &);
 
-        std::string _str;
-        size_t _i;
+        std::string m_str;
+        size_t m_i;
 };

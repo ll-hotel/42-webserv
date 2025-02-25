@@ -6,22 +6,22 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 15:54:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 15:22:02 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:59:02 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/config/Tokenizer.hpp"
 
-Tokenizer::Tokenizer() : _str(), _i(0) {}
+Tokenizer::Tokenizer() : m_str(), m_i(0) {}
 
-Tokenizer::Tokenizer(const std::string &str) : _str(str), _i(0) {}
+Tokenizer::Tokenizer(const std::string &str) : m_str(str), m_i(0) {}
 
-Tokenizer::Tokenizer(const Tokenizer &other) : _str(other._str), _i(other._i) {}
+Tokenizer::Tokenizer(const Tokenizer &other) : m_str(other.m_str), m_i(other.m_i) {}
 
 Tokenizer &Tokenizer::operator=(const Tokenizer &other)
 {
-        _str = other._str;
-        _i = other._i;
+        m_str = other.m_str;
+        m_i = other.m_i;
         return *this;
 }
 
@@ -60,15 +60,15 @@ std::vector<Token> Tokenizer::tokenize()
                 if (token_str.is_some())
                         tokens.push_back(Token(token_str.value()));
         }
-        _i = 0;
+        m_i = 0;
         return tokens;
 }
 
 Option<char> Tokenizer::peek() const
 {
-        if (_i >= _str.length())
+        if (m_i >= m_str.length())
                 return Option<char>();
-        return Option<char>(_str[_i]);
+        return Option<char>(m_str[m_i]);
 }
 
-char Tokenizer::consume() { return _str[_i++]; }
+char Tokenizer::consume() { return m_str[m_i++]; }

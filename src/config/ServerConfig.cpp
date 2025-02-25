@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:03:55 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 15:21:32 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:06:06 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,119 +78,119 @@ void ServerConfig::setVar(const Parameter &parameter)
         case INVALID:
                 WS_THROW("invalid key `" + parameter.first + "'");
         case SERVER_NAME:
-                change_server_name(parameter, &_server_name);
+                change_server_name(parameter, &m_serverName);
                 break;
         case HOST:
-                change_host(parameter, &_host);
+                change_host(parameter, &m_host);
                 break;
         case ROOT:
-                change_root(parameter, &_root);
+                change_root(parameter, &m_root);
                 break;
         case INDEX_PAGE:
-                change_index_page(parameter, &_index_page);
+                change_index_page(parameter, &m_indexPage);
                 break;
         case ERROR_PAGE:
-                change_error_page(parameter, &_error_pages);
+                change_error_page(parameter, &m_errorPages);
                 break;
         case LOCATION:
-                change_location(parameter, &_locations);
+                change_location(parameter, &m_locations);
                 break;
         case CGI:
-                change_cgi(parameter, &_allowed_cgi);
+                change_cgi(parameter, &m_allowedCgi);
                 break;
         case BODY_SIZE:
-                change_body_size(parameter, &_body_size);
+                change_body_size(parameter, &m_bodySize);
                 break;
         case PORT:
-                change_port(parameter, &_port);
+                change_port(parameter, &m_port);
                 break;
         case DIRECTORY_LISTING:
-                change_directory_listing(parameter, &_do_directory_listing);
+                change_directory_listing(parameter, &m_doDirectoryListing);
                 break;
         case METHODS:
-                change_methods(parameter, &_methods);
+                change_methods(parameter, &m_methods);
                 break;
         case UPLOAD_DIR:
-                change_upload_dir(parameter, &_upload_dir);
+                change_upload_dir(parameter, &m_uploadDir);
                 break;
         }
 }
 
 ServerConfig::ServerConfig()
 {
-        _server_name = "server";
-        _host = "127.0.0.1";
-        _root = ".";
-        _index_page = "index.html";
+        m_serverName = "server";
+        m_host = "127.0.0.1";
+        m_root = ".";
+        m_indexPage = "index.html";
         // _error_pages;
         // _locations;
         // _allowed_cgi;
-        _methods["POST"] = false;
-        _methods["GET"] = false;
-        _body_size = 1024;
-        _port = 8080;
-        _do_directory_listing = false;
-        _upload_dir = "";
+        m_methods["POST"] = false;
+        m_methods["GET"] = false;
+        m_bodySize = 1024;
+        m_port = 8080;
+        m_doDirectoryListing = false;
+        m_uploadDir = "";
 }
 
 ServerConfig::ServerConfig(const ServerConfig &other) { *this = other; }
 
 ServerConfig &ServerConfig::operator=(const ServerConfig &other)
 {
-        _server_name = other._server_name;
-        _host = other._host;
-        _root = other._root;
-        _index_page = other._index_page;
-        _error_pages = other._error_pages;
-        _locations = other._locations;
-        _allowed_cgi = other._allowed_cgi;
-        _methods = other._methods;
-        _body_size = other._body_size;
-        _port = other._port;
-        _do_directory_listing = other._do_directory_listing;
-        _upload_dir = other._upload_dir;
+        m_serverName = other.m_serverName;
+        m_host = other.m_host;
+        m_root = other.m_root;
+        m_indexPage = other.m_indexPage;
+        m_errorPages = other.m_errorPages;
+        m_locations = other.m_locations;
+        m_allowedCgi = other.m_allowedCgi;
+        m_methods = other.m_methods;
+        m_bodySize = other.m_bodySize;
+        m_port = other.m_port;
+        m_doDirectoryListing = other.m_doDirectoryListing;
+        m_uploadDir = other.m_uploadDir;
         return *this;
 }
 
 ServerConfig::~ServerConfig() {}
 
-const std::string &ServerConfig::server_name() const { return _server_name; }
-const std::string &ServerConfig::host() const { return _host; }
-const std::string &ServerConfig::root() const { return _root; }
-const std::string &ServerConfig::index_page() const { return _index_page; }
-const std::map<int, std::string> &ServerConfig::error_pages() const
+const std::string &ServerConfig::serverName() const { return m_serverName; }
+const std::string &ServerConfig::host() const { return m_host; }
+const std::string &ServerConfig::root() const { return m_root; }
+const std::string &ServerConfig::indexPage() const { return m_indexPage; }
+const std::map<int, std::string> &ServerConfig::errorPages() const
 {
-        return _error_pages;
+        return m_errorPages;
 }
 const std::vector<ServerConfig::Location> &ServerConfig::locations() const
 {
-        return _locations;
+        return m_locations;
 }
-const std::vector<std::string> &ServerConfig::allowed_cgi() const
+const std::vector<std::string> &ServerConfig::allowedCgi() const
 {
-        return _allowed_cgi;
+        return m_allowedCgi;
 }
-size_t ServerConfig::body_size() const { return _body_size; }
-int ServerConfig::port() const { return _port; }
-bool ServerConfig::do_directory_listing() const
+size_t ServerConfig::bodySize() const { return m_bodySize; }
+int ServerConfig::port() const { return m_port; }
+bool ServerConfig::doDirectoryListing() const
 {
-        return _do_directory_listing;
+        return m_doDirectoryListing;
 }
-bool ServerConfig::do_post() const { return _methods.at("POST"); }
-bool ServerConfig::do_get() const { return _methods.at("GET"); }
-bool ServerConfig::do_upload() const { return !_upload_dir.empty(); }
-const std::string &ServerConfig::upload_dir() const { return _upload_dir; }
+bool ServerConfig::doPost() const { return m_methods.at("POST"); }
+bool ServerConfig::doGet() const { return m_methods.at("GET"); }
+bool ServerConfig::doUpload() const { return !m_uploadDir.empty(); }
+const std::string &ServerConfig::uploadDir() const { return m_uploadDir; }
 
 std::ostream &operator<<(std::ostream &stream, const ServerConfig &elem)
 {
-        stream << "server_name: " << elem.server_name() << "\n";
+        stream << "server_name: " << elem.serverName() << "\n";
         stream << "host: " << elem.host() << "\n";
         stream << "root: " << elem.root() << "\n";
-        stream << "index_page: " << elem.index_page() << "\n";
+        stream << "index_page: " << elem.indexPage() << "\n";
         stream << "error_pages : {\n";
         for (std::map<int, std::string>::const_iterator iter =
-                     elem.error_pages().begin();
-             iter != elem.error_pages().end(); ++iter) {
+                     elem.errorPages().begin();
+             iter != elem.errorPages().end(); ++iter) {
                 stream << "    " << iter->first << " => " << iter->second
                        << "\n";
         }
@@ -201,26 +201,26 @@ std::ostream &operator<<(std::ostream &stream, const ServerConfig &elem)
              iter != elem.locations().end(); ++iter) {
                 stream << "    " << iter->root() << " {\n";
                 stream << "        alias: " << iter->alias() << "\n";
-                stream << "        do_get: " << (iter->do_get() ? "yes" : "no")
+                stream << "        do_get: " << (iter->doGet() ? "yes" : "no")
                        << "\n";
                 stream << "        do_post: "
-                       << (iter->do_post() ? "yes" : "no") << "\n";
+                       << (iter->doPost() ? "yes" : "no") << "\n";
         }
         stream << "}\n";
         stream << "allowed_cgi : {\n";
         for (std::vector<std::string>::const_iterator iter =
-                     elem.allowed_cgi().begin();
-             iter != elem.allowed_cgi().end(); ++iter) {
+                     elem.allowedCgi().begin();
+             iter != elem.allowedCgi().end(); ++iter) {
                 stream << "    " << *iter << "\n";
         }
         stream << "}\n";
-        stream << "body_size: " << elem.body_size() << "\n";
+        stream << "body_size: " << elem.bodySize() << "\n";
         stream << "port: " << elem.port() << "\n";
         stream << "do_directory_listing: "
-               << (elem.do_directory_listing() ? "yes" : "no") << "\n";
-        stream << "do_get: " << (elem.do_get() ? "yes" : "no") << "\n";
-        stream << "do_post: " << (elem.do_post() ? "yes" : "no") << "\n";
-        stream << "do_upload: " << (elem.do_upload() ? "yes" : "no") << "\n";
-        stream << "upload_dir: " << elem.upload_dir();
+               << (elem.doDirectoryListing() ? "yes" : "no") << "\n";
+        stream << "do_get: " << (elem.doGet() ? "yes" : "no") << "\n";
+        stream << "do_post: " << (elem.doPost() ? "yes" : "no") << "\n";
+        stream << "do_upload: " << (elem.doUpload() ? "yes" : "no") << "\n";
+        stream << "upload_dir: " << elem.uploadDir();
         return stream;
 }

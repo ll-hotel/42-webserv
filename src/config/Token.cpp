@@ -6,11 +6,12 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:12:52 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 15:21:44 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:00:14 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/config/Token.hpp"
+#include <ostream>
 
 Token::Token(const std::string &str) : type(WORD), value(str)
 {

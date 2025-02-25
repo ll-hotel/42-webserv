@@ -6,18 +6,18 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:46:33 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 15:21:20 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:59:12 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/config/Parser.hpp"
 #include "webserv/Exception.hpp"
 
-Parser::Parser() : _tokens(), _i(0) {}
+Parser::Parser() : m_tokens(), m_i(0) {}
 
-Parser::Parser(const std::vector<Token> &tokens) : _tokens(tokens), _i(0) {}
+Parser::Parser(const std::vector<Token> &tokens) : m_tokens(tokens), m_i(0) {}
 
-Parser::Parser(const Parser &other) : _tokens(other._tokens), _i(0) {}
+Parser::Parser(const Parser &other) : m_tokens(other.m_tokens), m_i(0) {}
 
 Parser &Parser::operator=(const Parser &) { return *this; }
 
@@ -25,12 +25,12 @@ Parser::~Parser() {}
 
 Option<Token> Parser::peek() const
 {
-        if (_i >= _tokens.size())
+        if (m_i >= m_tokens.size())
                 return Option<Token>();
-        return Option<Token>(_tokens[_i]);
+        return Option<Token>(m_tokens[m_i]);
 }
 
-Token Parser::consume() { return _tokens[_i++]; }
+Token Parser::consume() { return m_tokens[m_i++]; }
 
 std::vector<Parameter> Parser::parse()
 {
