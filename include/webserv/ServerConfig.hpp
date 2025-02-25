@@ -6,12 +6,11 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 21:00:43 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 16:06:00 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:12:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONFIG_HPP
-#define CONFIG_HPP
+#pragma once
 #include "config/Parser.hpp"
 #include <map>
 #include <ostream>
@@ -78,5 +77,3 @@ public:
 std::ostream &operator<<(std::ostream &, const ServerConfig &);
 
 std::vector<ServerConfig> parse_configs_from_file(const std::string &filename);
-
-#endif
