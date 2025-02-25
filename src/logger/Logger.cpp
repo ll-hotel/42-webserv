@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:59:48 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 16:05:53 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 17:48:23 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ Logger::~Logger()
 
 void Logger::log(Logger::e_log_level t_level, const std::string &t_message)
 {
-	struct Logger::s_log_object log_object = {0};
+
+	struct Logger::s_log_object log_object = {};
 	time_t raw_time;
 	tm* timeinfo;
 
