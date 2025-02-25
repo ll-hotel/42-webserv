@@ -46,8 +46,8 @@ static Option<std::string> read_token_str(Tokenizer &tokenizer)
                !std::isspace(tokenizer.peek().value()) &&
                specials.find(tokenizer.peek().value()) == std::string::npos)
                 w += tokenizer.consume();
-	if (w.length() == 0)
-		return Option<std::string>();
+        if (w.length() == 0)
+                return Option<std::string>();
         return Option<std::string>(w);
 }
 
@@ -55,11 +55,11 @@ std::vector<Token> Tokenizer::tokenize()
 {
         std::vector<Token> tokens;
 
-	while (peek().is_some()) {
-		Option<std::string> token_str = read_token_str(*this);
-		if (token_str.is_some())
-			tokens.push_back(Token(token_str.value()));
-	}
+        while (peek().is_some()) {
+                Option<std::string> token_str = read_token_str(*this);
+                if (token_str.is_some())
+                        tokens.push_back(Token(token_str.value()));
+        }
         _i = 0;
         return tokens;
 }

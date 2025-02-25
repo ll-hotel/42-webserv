@@ -34,7 +34,7 @@ fsan: all
 $(NAME): $(OBJS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(OBJS)
 
-$(OBJ_DIR)/%.o:: $(SRC_DIR)/%.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(Q)mkdir -p $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
 

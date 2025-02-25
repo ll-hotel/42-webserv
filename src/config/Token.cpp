@@ -27,9 +27,9 @@ Token::Token(const Token &other) : type(other.type), value(other.value) {}
 
 Token &Token::operator=(const Token &other)
 {
-	if (this == &other)
-		return *this;
-	type = other.type;
+        if (this == &other)
+                return *this;
+        type = other.type;
         value = other.value;
         return *this;
 }

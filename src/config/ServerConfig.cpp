@@ -54,7 +54,7 @@ static ServerConfigIdentifier which_identifier(const Token &token)
                 key_list["upload_dir"] = UPLOAD_DIR;
         }
         std::map<std::string, ServerConfigIdentifier>::const_iterator key =
-            key_list.find(token.value);
+                key_list.find(token.value);
         if (key != key_list.end())
                 return key->second;
         return INVALID;
@@ -189,7 +189,7 @@ std::ostream &operator<<(std::ostream &stream, const ServerConfig &elem)
         stream << "index_page: " << elem.index_page() << "\n";
         stream << "error_pages : {\n";
         for (std::map<int, std::string>::const_iterator iter =
-                 elem.error_pages().begin();
+                     elem.error_pages().begin();
              iter != elem.error_pages().end(); ++iter) {
                 stream << "    " << iter->first << " => " << iter->second
                        << "\n";
@@ -197,7 +197,7 @@ std::ostream &operator<<(std::ostream &stream, const ServerConfig &elem)
         stream << "}\n";
         stream << "locations : {\n";
         for (std::vector<ServerConfig::Location>::const_iterator iter =
-                 elem.locations().begin();
+                     elem.locations().begin();
              iter != elem.locations().end(); ++iter) {
                 stream << "    " << iter->root() << " {\n";
                 stream << "        alias: " << iter->alias() << "\n";
@@ -209,7 +209,7 @@ std::ostream &operator<<(std::ostream &stream, const ServerConfig &elem)
         stream << "}\n";
         stream << "allowed_cgi : {\n";
         for (std::vector<std::string>::const_iterator iter =
-                 elem.allowed_cgi().begin();
+                     elem.allowed_cgi().begin();
              iter != elem.allowed_cgi().end(); ++iter) {
                 stream << "    " << *iter << "\n";
         }
