@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:14:17 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/04 00:27:21 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 16:52:57 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class Webserv
 public:
 	Webserv(const std::string &file_name);
 	const Config &getConfig() const;
-	const std::vector<SocketListener *> &getlisteners() const;
+	const std::vector<SocketListener *> &getListeners() const;
 	const std::queue<struct s_client_handler>	&getClientList() const;
 	void	acceptClients();
 	void	resolveClients();
@@ -44,11 +44,11 @@ private:
 	Webserv(const Webserv &);
 	Webserv operator=(const Webserv &);
 
-	Config					_config;
-	std::vector<SocketListener *>		_listeners;
-	int					_epollFd;
-	size_t					_epollSize;
-	std::queue<struct s_client_handler>	_clientsList;
+	Config					m_config;
+	std::vector<SocketListener *>		m_listeners;
+	int					m_epollFd;
+	size_t					m_epollSize;
+	std::queue<struct s_client_handler>	m_clientsList;
 };
 
 

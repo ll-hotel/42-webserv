@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:46:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/13 00:44:04 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 16:53:23 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ static inline	void	generate_epoll_event(int fd,
 		std::vector<SocketListener*> &listeners_list);
 
 Webserv::Webserv(const std::string &file_name):
-_config(file_name)
+m_config(file_name)
 {
-	generate_socketListeners(_config, _listeners);
-	_epollSize = _listeners.size();
-	_epollFd = epoll_create(_epollSize);
-	if (_epollFd < 0)
+	generate_socketListeners(m_config, m_listeners);
+	m_epollSize = m_listeners.size();
+	m_epollFd = epoll_create(m_epollSize);
+	if (m_epollFd < 0)
 		throw (WebservException(std::string("epoll_create: ") + strerror(errno)));
-	generate_epoll_event(_epollFd, _listeners);
+	generate_epoll_event(m_epollFd, m_listeners);
 }
 
 static inline	void	generate_epoll_event(int fd, std::vector<SocketListener*> &listeners_list)
@@ -60,26 +60,26 @@ static inline	void	generate_socketListeners(Config &config,
 
 const Config &Webserv::getConfig() const
 {
-	return (this->_config);
+	return (this->m_config);
 }
 
-const std::vector<SocketListener *> &Webserv::getlisteners() const
+const std::vector<SocketListener *> &Webserv::getListeners() const
 {
-	return (this->_listeners);
+	return (this->m_listeners);
 }
 
 const std::queue<struct s_client_handler> &Webserv::getClientList() const
 {
-	return (_clientsList);
+	return (m_clientsList);
 }
 
 static inline	std::map<int, SocketListener*> set_listener(Webserv &ws)
 {
 	std::map<int, SocketListener*> listener_map;
-	for (size_t i = 0; i < ws.getlisteners().size(); i++)
+	for (size_t i = 0; i < ws.getListeners().size(); i++)
 	{
-		int fd = ws.getlisteners()[i]->getFd();
-		listener_map[fd] = ws.getlisteners()[i];
+		int fd = ws.getListeners()[i]->getFd();
+		listener_map[fd] = ws.getListeners()[i];
 	}
 	return (listener_map);
 }
@@ -87,10 +87,10 @@ static inline	std::map<int, SocketListener*> set_listener(Webserv &ws)
 void Webserv::acceptClients()
 {
 	std::map<int, SocketListener *>	listener_map;
-	struct epoll_event		*epoll_events = new struct epoll_event[this->_epollSize]();
+	struct epoll_event		*epoll_events = new struct epoll_event[this->m_epollSize]();
 	
 	listener_map = set_listener(*this);
-	int nbr_action = epoll_wait(_epollFd, epoll_events, _epollSize, DEFAULT_POLL_TIMEOUT);
+	int nbr_action = epoll_wait(m_epollFd, epoll_events, m_epollSize, DEFAULT_POLL_TIMEOUT);
 	if (nbr_action < 0)
 	{
 		delete[] epoll_events;
@@ -109,7 +109,7 @@ void Webserv::acceptClients()
 			struct s_client_handler client_handle;
 			client_handle.client = socket_action->accept();
 			client_handle.eevents = epoll_events[nbr_action_count];
-			_clientsList.push(client_handle);
+			m_clientsList.push(client_handle);
 		}
 		catch(WebservException e)
 		{
@@ -121,28 +121,28 @@ void Webserv::acceptClients()
 
 void Webserv::resolveClients()
 {
-	for (size_t clients_count = this->_clientsList.size(); clients_count ;clients_count--)
+	for (size_t clients_count = this->m_clientsList.size(); clients_count ;clients_count--)
 	{
-		struct s_client_handler client = this->_clientsList.front();
-		this->_clientsList.pop();
+		struct s_client_handler client = this->m_clientsList.front();
+		this->m_clientsList.pop();
 		std::cout << "Client on " << client.client->fd() << std::endl;
-		this->_clientsList.push(client);
+		this->m_clientsList.push(client);
 	}
 }
 Webserv::~Webserv()
 {
-	std::vector<SocketListener*>::const_iterator it_end = _listeners.end();
-	std::vector<SocketListener*>::iterator it_inc = _listeners.begin();
+	std::vector<SocketListener*>::const_iterator it_end = m_listeners.end();
+	std::vector<SocketListener*>::iterator it_inc = m_listeners.begin();
 	for (;it_inc != it_end; it_inc++)
 		delete *it_inc;
-	while (_clientsList.size() != 0)
+	while (m_clientsList.size() != 0)
 	{
-		ClientSocket *client = _clientsList.front().client;
+		ClientSocket *client = m_clientsList.front().client;
 		delete client;
-		_clientsList.pop();
+		m_clientsList.pop();
 	}
-	_listeners.clear();
-	close(_epollFd);
+	m_listeners.clear();
+	close(m_epollFd);
 }
 
 /******************************************************************************/
@@ -155,11 +155,11 @@ Webserv Webserv::operator=(const Webserv &)
 	return (*this);
 }
 
-Webserv::Webserv() : _config()
+Webserv::Webserv() : m_config()
 {
 }
 
-Webserv::Webserv(const Webserv &) : _config()
+Webserv::Webserv(const Webserv &) : m_config()
 {
 }
 
