@@ -3,16 +3,24 @@ MAKEFLAGS := --no-print-directory
 Q := @
 
 RM := rm -fv
-
 CXX := c++
-CPPFLAGS := -MMD -MP
-CXXFLAGS := -Wall -Wextra # -Werror
-CXXFLAGS += -std=c++98
-CXXFLAGS += -Iinclude
 
-MODULES := config http_response httpRequest socket webserv logger
+MODULES :=
+MODULES += config
+MODULES += http_response
+MODULES += httpRequest
+MODULES += socket
+MODULES += webserv
+MODULES += logger
+
 OBJ_DIR := .obj
 SRC_DIR := src
+INC_DIR := include
+
+CPPFLAGS := -MMD -MP
+CXXFLAGS := -Wall -Wextra -Werror
+CXXFLAGS += -std=c++98
+CXXFLAGS += -I$(INC_DIR)
 
 SRCS :=
 SRCS += main.cpp
