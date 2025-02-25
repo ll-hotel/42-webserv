@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:14:17 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 16:52:57 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 17:15:00 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <queue>
 #include <sys/epoll.h>
 
-#include "webserv/Config.hpp"
+#include "webserv/ServerConfig.hpp"
 #include "webserv/SocketListener.hpp"
 
 # define DEFAULT_POLL_TIMEOUT 500
@@ -33,18 +33,18 @@ class Webserv
 
 public:
 	Webserv(const std::string &file_name);
-	const Config &getConfig() const;
 	const std::vector<SocketListener *> &getListeners() const;
 	const std::queue<struct s_client_handler>	&getClientList() const;
 	void	acceptClients();
 	void	resolveClients();
+	const std::vector<ServerConfig>	&getServerConfig() const;
 	~Webserv();
 private:
 	Webserv();
 	Webserv(const Webserv &);
 	Webserv operator=(const Webserv &);
 
-	Config					m_config;
+	std::vector<ServerConfig> 		m_serverConfig;
 	std::vector<SocketListener *>		m_listeners;
 	int					m_epollFd;
 	size_t					m_epollSize;

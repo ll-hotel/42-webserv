@@ -1,1 +1,6 @@
-SRCS += config/Config.cpp config/lexer.cpp config/read_file.cpp config/Config_Server.cpp
+SRCS += config/Parser.cpp
+SRCS += config/ServerConfig.cpp
+SRCS += config/Token.cpp
+SRCS += config/Tokenizer.cpp
+SRCS += config/parse_configs_from_file.cpp
+SRCS += config/use_parameter.cpp

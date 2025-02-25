@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:46:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 16:53:23 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 17:16:20 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,18 @@
 #include <cstring>
 #include <unistd.h>
 #include <errno.h>
-
+#include "webserv/Exception.hpp"
 #include "webserv/Webserv.hpp"
-#include "webserv/Config.hpp"
 
-static inline	void	generate_socketListeners(Config &config,
-		std::vector<SocketListener*> &listeners_list);
 static inline	void	generate_epoll_event(int fd,
 		std::vector<SocketListener*> &listeners_list);
+static inline	void	generate_socketListeners(const std::vector<ServerConfig> server_list,
+	std::vector<SocketListener*> &listeners_list);
 
-Webserv::Webserv(const std::string &file_name):
-m_config(file_name)
+Webserv::Webserv(const std::string &file_name)
 {
-	generate_socketListeners(m_config, m_listeners);
+	m_serverConfig = parse_configs_from_file(file_name);
+	generate_socketListeners(m_serverConfig, m_listeners);
 	m_epollSize = m_listeners.size();
 	m_epollFd = epoll_create(m_epollSize);
 	if (m_epollFd < 0)
@@ -38,9 +37,9 @@ m_config(file_name)
 
 static inline	void	generate_epoll_event(int fd, std::vector<SocketListener*> &listeners_list)
 {
-	for (int i = 0; i < listeners_list.size(); i++)
+	for (size_t i = 0; i < listeners_list.size(); i++)
 	{
-		struct epoll_event	nevent = {0};
+		struct epoll_event	nevent = {};
 		nevent.events = EPOLLIN;
 		nevent.data.fd = listeners_list[i]->getFd();
 		if (epoll_ctl(fd, EPOLL_CTL_ADD, listeners_list[i]->getFd(), &nevent) < 0)
@@ -48,19 +47,19 @@ static inline	void	generate_epoll_event(int fd, std::vector<SocketListener*> &li
 	}
 }
 
-static inline	void	generate_socketListeners(Config &config,
+static inline	void	generate_socketListeners(const std::vector<ServerConfig> server_list,
 		std::vector<SocketListener*> &listeners_list)
 {
-	std::vector<Config::Server>::const_iterator it_end = config.getServers().end();
-	std::vector<Config::Server>::const_iterator it_inc = config.getServers().begin();
+	std::vector<ServerConfig>::const_iterator it_end = server_list.end();
+	std::vector<ServerConfig>::const_iterator it_inc = server_list.begin();
 
 	for (;it_inc != it_end; it_inc++)
-		listeners_list.push_back(new SocketListener(it_inc->getPort()));
+		listeners_list.push_back(new SocketListener(it_inc->port()));
 }
 
-const Config &Webserv::getConfig() const
+const std::vector<ServerConfig> &Webserv::getServerConfig() const
 {
-	return (this->m_config);
+	return (this->m_serverConfig);
 }
 
 const std::vector<SocketListener *> &Webserv::getListeners() const
@@ -155,11 +154,11 @@ Webserv Webserv::operator=(const Webserv &)
 	return (*this);
 }
 
-Webserv::Webserv() : m_config()
+Webserv::Webserv()
 {
 }
 
-Webserv::Webserv(const Webserv &) : m_config()
+Webserv::Webserv(const Webserv &)
 {
 }
 

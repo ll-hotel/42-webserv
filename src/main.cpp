@@ -6,11 +6,10 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/19 14:45:09 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 17:03:51 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "webserv/Config.hpp"
 #include "webserv/Exception.hpp"
 #include "webserv/Webserv.hpp"
 #include <iostream>
