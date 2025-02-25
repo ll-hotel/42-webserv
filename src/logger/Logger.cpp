@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:59:48 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 12:24:35 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/25 15:09:53 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@
 
 Logger::Logger()
 {
-	this->openOutFile("log.log");
+	this->_isSet = false;
 }
 
 Logger::Logger(const std::string &file_name)
 {
 	this->openOutFile(file_name);
+	this->_isSet = true;
 }
 
 Logger::~Logger()
 {
-	this->_outFile.flush();
-	this->_outFile.close();
+	this->close();
 }
 
 void Logger::log(Logger::e_log_level level, const std::string &message)
@@ -43,7 +43,29 @@ void Logger::log(Logger::e_log_level level, const std::string &message)
 	raw_time = time(0);
 	timeinfo = localtime(&raw_time);
 	strftime(log_object.str_time, 20, "%Y-%m-%d %H:%M:%S", timeinfo);
-	this->_messageQueue.push(log_object);
+	std::cout << log_object;
+	if (_isSet)
+		this->_outFile << log_object;
+}
+
+void Logger::open(const std::string &file_name)
+{
+	this->close();
+	openOutFile(file_name);
+	_isSet = true;
+}
+
+void Logger::open()
+{
+	this->open("logout.txt");
+}
+
+void Logger::close()
+{
+	if (!_isSet)
+		return ;
+	_outFile.close();
+	_isSet = false;
 }
 
 static std::string level_to_string(Logger::e_log_level level)
@@ -61,26 +83,12 @@ static std::string level_to_string(Logger::e_log_level level)
 	return (level_list[level]);
 }
 
-void Logger::flush()
-{
-	while (this->_messageQueue.size() > 0)
-	{
-		Logger::s_log_object log_object = this->_messageQueue.front();
-		this->_messageQueue.pop();
-		std::cout << log_object;
-		this->_outFile << log_object;
-	}
-	this->_outFile.flush();
-	std::cout.flush();
-}
-
 void Logger::openOutFile(const std::string &file_name)
 {
 	this->_outFile.open(file_name.c_str(), std::fstream::app );
 	if (this->_outFile.bad() || !this->_outFile.is_open())
 		throw WebservException(std::string("logger: ") + file_name + ": " + strerror(errno));
 	this->log(Logger::INFO, "---start log---");
-	this->flush();
 }
 std::ostream &operator<<(std::ostream &os, const Logger::s_log_object &log_object)
 {
