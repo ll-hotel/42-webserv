@@ -21,7 +21,7 @@ public:
         Option &operator=(const Option &other)
         {
                 m_value = other.m_value;
-		m_some = other.m_some;
+                m_some = other.m_some;
                 return *this;
         }
         ~Option() {}
@@ -30,5 +30,5 @@ public:
 
 private:
         T m_value;
-	bool m_some;
+        bool m_some;
 };

@@ -17,23 +17,19 @@
 #include <string>
 #define WS_THROW(error) throw(WebservException(error))
 
-class WebservException : public std::exception {
+class WebservException : public std::exception
+{
 private:
-	const std::string _str;
+        const std::string _str;
+
 public:
-	WebservException(const std::string &str):
-		_str("webserv: error: " + str)
-	{}
-	virtual ~WebservException() throw()
-	{};
-	virtual const char *what() const throw()
-	{
-		return _str.c_str();
-	}
-	virtual void print() const throw()
-	{
-		std::cerr << what() << std::endl;
-	}
+        WebservException(const std::string &str)
+                : _str("webserv: error: " + str)
+        {
+        }
+        virtual ~WebservException() throw() {};
+        virtual const char *what() const throw() { return _str.c_str(); }
+        virtual void print() const throw() { std::cerr << what() << std::endl; }
 };
 
 #endif

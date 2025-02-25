@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:40:52 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 15:57:04 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:38:23 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 #include <utility>
 #include <vector>
 
-typedef std::pair<std::string, std::vector<std::string> > Parameter;
+typedef std::vector<std::string> StringVector;
+typedef std::pair<std::string, StringVector> Parameter;
 
 class Parser
 {

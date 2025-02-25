@@ -13,33 +13,29 @@
 #include "webserv/Exception.hpp"
 #include "webserv/Webserv.hpp"
 #include <iostream>
-#include <vector>
 #include <map>
+#include <vector>
 
 int main(int ac, char **av)
 {
-	if (ac > 2)
-	{
-		std::cout << "to many args" << std::endl;
-		return 1;
-	}
-	std::string	file_path = "webserv.conf";
-	if (ac == 2)
-		file_path = av[1];
-	try
-	{
-		Webserv webserv(file_path);
+        if (ac > 2) {
+                std::cout << "to many args" << std::endl;
+                return 1;
+        }
+        std::string file_path = "webserv.conf";
+        if (ac == 2)
+                file_path = av[1];
+        try {
+                Webserv webserv(file_path);
 
-		while (1)
-		{
-			webserv.acceptClients();
-			std::cout << webserv.getClientList().size() << std::endl;
-			webserv.resolveClients();
-		}
-	}
-	catch(WebservException &e)
-	{
-		e.print();
-	}
-	return 0;
+                while (1) {
+                        webserv.acceptClients();
+                        std::cout << webserv.getClientList().size()
+                                  << std::endl;
+                        webserv.resolveClients();
+                }
+        } catch (WebservException &e) {
+                e.print();
+        }
+        return 0;
 }
