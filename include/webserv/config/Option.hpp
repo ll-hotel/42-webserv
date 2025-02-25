@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 18:41:32 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/24 16:08:32 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:55:02 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,19 @@
 template <typename T> class Option
 {
 public:
-        Option() : _value() { std::memset(&_value, 0, sizeof(_value)); }
-        Option(const T &value) : _value(value) {}
+        Option() : m_some(false) {}
+        Option(const T &value) : m_value(value), m_some(true) {}
         Option &operator=(const Option &other)
         {
-                _value = other._value;
+                m_value = other.m_value;
+		m_some = other.m_some;
                 return *this;
         }
         ~Option() {}
-        bool is_some() const
-        {
-                static const char zeroed[sizeof(_value)] = {0};
-                return std::memcmp(&_value, zeroed, sizeof(zeroed)) != 0;
-        }
-        T &value() { return _value; }
-        const T &value() const { return _value; }
+        bool is_some() const { return m_some; }
+        const T &value() const { return m_value; }
 
 private:
-        T _value;
+        T m_value;
+	bool m_some;
 };
