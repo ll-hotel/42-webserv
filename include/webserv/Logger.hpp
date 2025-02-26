@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:08:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 18:07:45 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/26 15:18:39 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ public:
 		DEBUG,
 		WARN,
 		ERROR,
-		LOG_LEVEL_LEN,
+		LOG_LEVEL_LEN
 	};
 
 	void log(Logger::e_log_level level, const std::string &message);

@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:22:26 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/31 17:09:31 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/26 15:23:41 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,10 @@ void SocketListener::create()
 
 void SocketListener::bind(int port)
 {
-	sockaddr_in address = {
-		.sin_family = DEFAULT_FAMILY,
-		.sin_port = htons(port),
-		.sin_addr = {.s_addr = DEFAULT_ADDR},
-	};
+	sockaddr_in address = {};
+	address.sin_family = DEFAULT_FAMILY;
+	address.sin_port = htons(port);
+	address.sin_addr.s_addr = DEFAULT_ADDR;
 	_port = port;
 	if (::bind(_fd, (struct sockaddr *)&address, sizeof(address)))
 		WS_THROW(std::string("socket bind fail: ") + strerror(errno));
