@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:22:26 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/31 17:09:31 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/26 15:19:42 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void SocketListener::bind(int port)
 		.sin_family = DEFAULT_FAMILY,
 		.sin_port = htons(port),
 		.sin_addr = {.s_addr = DEFAULT_ADDR},
+		.sin_zero = {}
 	};
 	_port = port;
 	if (::bind(_fd, (struct sockaddr *)&address, sizeof(address)))
