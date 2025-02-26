@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:04:35 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/01/15 17:34:36 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:19:54 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ typedef enum {
 	SERVER_ERROR_LOOP_DETECTED = 508,
 	SERVER_ERROR_BANDWITH_LIMIT_EXCEEDED = 509,
 	SERVER_ERROR_NOT_EXTENDED = 510,
-	SERVER_ERROR_NETWORK_AUTH_REQUIRED = 511,
+	SERVER_ERROR_NETWORK_AUTH_REQUIRED = 511
 } t_status_code;
 
 const std::string &status_table(t_status_code code);
