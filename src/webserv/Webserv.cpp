@@ -6,12 +6,13 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:46:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 17:16:20 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/26 14:17:09 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/Webserv.hpp"
 #include "webserv/Exception.hpp"
+#include "webserv/config/validate_paths.hpp"
 #include <cstring>
 #include <errno.h>
 #include <exception>
@@ -28,6 +29,8 @@ generate_socketListeners(const std::vector<ServerConfig> server_list,
 Webserv::Webserv(const std::string &file_name)
 {
 	m_serverConfig = parse_configs_from_file(file_name);
+	for (size_t i = 0; i < m_serverConfig.size(); i += 1)
+		validate_paths(m_serverConfig[i]);
 	generate_socketListeners(m_serverConfig, m_listeners);
 	m_epollSize = m_listeners.size();
 	m_epollFd = epoll_create(m_epollSize);
