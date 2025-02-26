@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:11:31 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/01/15 17:48:49 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/26 10:59:15 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ HttpResponse::HttpResponse(const HttpRequest &request)
                 _status_code = HTTP_ERROR_METHOD_NOT_ALLOWED;
         else {
                 std::string filename = "resources" + request.resource();
-                struct stat file_stat = {0};
+                struct stat file_stat = {};
                 if (::stat(filename.c_str(), &file_stat)) {
                         switch (errno) {
                         case ENOENT:

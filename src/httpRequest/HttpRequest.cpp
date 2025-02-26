@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 20:08:58 by gcros             #+#    #+#             */
-/*   Updated: 2025/01/23 16:30:32 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/26 10:59:44 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 HttpRequest::HttpRequest() {}
 
 HttpRequest::HttpRequest(const HttpRequest &rp)
-        : _method(rp._method), _version(rp._version), _resource(rp._resource),
+        : _method(rp._method), _resource(rp._resource), _version(rp._version),
           _request(rp._request)
 {
 }
