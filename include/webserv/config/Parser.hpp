@@ -24,17 +24,17 @@ typedef std::pair<std::string, StringVector> Parameter;
 class Parser
 {
 public:
-        Parser();
-        Parser(const std::vector<Token> &tokens);
-        Parser(const Parser &);
-        ~Parser();
-        Option<Token> peek() const;
-        Token consume();
-        std::vector<Parameter> parse();
+	Parser();
+	Parser(const std::vector<Token> &tokens);
+	Parser(const Parser &);
+	~Parser();
+	Option<Token> peek() const;
+	Token consume();
+	std::vector<Parameter> parse();
 
 private:
-        Parser &operator=(const Parser &);
+	Parser &operator=(const Parser &);
 
-        const std::vector<Token> m_tokens;
-        size_t m_i;
+	const std::vector<Token> m_tokens;
+	size_t m_i;
 };

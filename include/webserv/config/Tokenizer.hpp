@@ -20,17 +20,17 @@
 class Tokenizer
 {
 public:
-        Tokenizer();
-        Tokenizer(const std::string &str);
-        Tokenizer(const Tokenizer &);
-        ~Tokenizer();
-        std::vector<Token> tokenize();
-        Option<char> peek() const;
-        char consume();
+	Tokenizer();
+	Tokenizer(const std::string &str);
+	Tokenizer(const Tokenizer &);
+	~Tokenizer();
+	std::vector<Token> tokenize();
+	Option<char> peek() const;
+	char consume();
 
 private:
-        Tokenizer &operator=(const Tokenizer &);
+	Tokenizer &operator=(const Tokenizer &);
 
-        std::string m_str;
-        size_t m_i;
+	std::string m_str;
+	size_t m_i;
 };

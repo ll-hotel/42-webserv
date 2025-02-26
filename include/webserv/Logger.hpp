@@ -22,42 +22,42 @@
 class Logger
 {
 public:
-        Logger();
-        Logger(const std::string &);
-        ~Logger();
+	Logger();
+	Logger(const std::string &);
+	~Logger();
 
-        enum e_log_level {
-                INIT,
-                INFO,
-                DEBUG,
-                WARN,
-                ERROR,
-                LOG_LEVEL_LEN,
-        };
+	enum e_log_level {
+		INIT,
+		INFO,
+		DEBUG,
+		WARN,
+		ERROR,
+		LOG_LEVEL_LEN,
+	};
 
-        void log(Logger::e_log_level level, const std::string &message);
-        void log(std::string custom_level, const std::string &message);
-        bool isSet() const { return m_isSet; }
-        void open(const std::string &);
-        void open();
-        void close();
+	void log(Logger::e_log_level level, const std::string &message);
+	void log(std::string custom_level, const std::string &message);
+	bool isSet() const { return m_isSet; }
+	void open(const std::string &);
+	void open();
+	void close();
 
-        struct s_log_object {
-                char str_time[20];
-                std::string message;
-                std::string level;
-        };
+	struct s_log_object {
+		char str_time[20];
+		std::string message;
+		std::string level;
+	};
 
 private:
-        Logger &operator=(Logger &);
-        Logger(Logger &);
-        void openOutFile(const std::string &);
+	Logger &operator=(Logger &);
+	Logger(Logger &);
+	void openOutFile(const std::string &);
 
-        std::ofstream m_outFile;
-        bool m_isSet;
+	std::ofstream m_outFile;
+	bool m_isSet;
 };
 
 std::ostream &operator<<(std::ostream &os,
-                         const Logger::s_log_object &log_object);
+			 const Logger::s_log_object &log_object);
 
 #endif
