@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:46:18 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 15:58:19 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:19:16 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ public:
 		WORD,
 		BRACK_LEFT = '{',
 		BRACK_RIGHT = '}',
-		SEMI = ';',
+		SEMI = ';'
 	} type;
 	std::string value;
 };

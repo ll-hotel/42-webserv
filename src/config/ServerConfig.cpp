@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:03:55 by ll-hotel          #+#    #+#             */
-/*   Updated: 2025/02/25 16:06:06 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:19:27 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ enum ServerConfigIdentifier {
 	METHODS,
 	UPLOAD_DIR,
 	MAX_KEY_TYPE = UPLOAD_DIR,
-	INVALID = MAX_KEY_TYPE + 1,
+	INVALID = MAX_KEY_TYPE + 1
 };
 
 static ServerConfigIdentifier which_identifier(const Token &token)

@@ -19,6 +19,7 @@ INC_DIR := include
 
 CPPFLAGS := -MMD -MP
 CXXFLAGS := -Wall -Wextra -Werror
+CXXFLAGS += -Wpedantic
 CXXFLAGS += -std=c++98
 CXXFLAGS += -I$(INC_DIR)
 
