@@ -21,9 +21,9 @@ void change_host(const Parameter &, std::string *host);
 void change_root(const Parameter &, std::string *root);
 void change_index_page(const Parameter &, std::string *index_page);
 void change_error_page(const Parameter &,
-                       std::map<int, std::string> *error_pages);
+		       std::map<int, std::string> *error_pages);
 void change_location(const Parameter &,
-                     std::vector<ServerConfig::Location> *locations);
+		     std::vector<ServerConfig::Location> *locations);
 void change_cgi(const Parameter &, std::vector<std::string> *cgi);
 void change_body_size(const Parameter &, size_t *body_size);
 void change_port(const Parameter &, int *port);

@@ -1,5 +1,5 @@
-#include "canonicalize.hpp"
 #include "webserv/config/use_parameter.hpp"
+#include "canonicalize.hpp"
 #include "webserv/Exception.hpp"
 #include <cstdlib>
 

@@ -19,43 +19,43 @@
 HttpRequest::HttpRequest() {}
 
 HttpRequest::HttpRequest(const HttpRequest &rp)
-        : _method(rp._method), _resource(rp._resource), _version(rp._version),
-          _request(rp._request)
+	: _method(rp._method), _resource(rp._resource), _version(rp._version),
+	  _request(rp._request)
 {
 }
 
 HttpRequest &HttpRequest::operator=(const HttpRequest &other)
 {
-        _method = other._method;
-        _version = other._version;
-        _resource = other._resource;
-        _request = other._request;
-        return *this;
+	_method = other._method;
+	_version = other._version;
+	_resource = other._resource;
+	_request = other._request;
+	return *this;
 }
 
 HttpRequest::HttpRequest(const std::string &request)
 {
-        std::istringstream stream_request(request);
+	std::istringstream stream_request(request);
 
-        if (request.empty() || !stream_request)
-                throw(WebservException("empty request"));
-        std::getline(stream_request, _method, ' ');
-        if (_method != "GET" && _method != "POST")
-                throw(WebservException("unsupported request method " +
-                                       _method));
-        if (!stream_request)
-                throw(WebservException("incomplete request"));
-        std::getline(stream_request, _resource, ' ');
-        if (!stream_request)
-                throw(WebservException("incomplete request"));
-        std::getline(stream_request, _version, '\n');
-        if (_version != "HTTP/1.1\r")
-                throw(WebservException("unsupported HTTP version " + _version));
-        std::getline(stream_request, _request, '\0');
+	if (request.empty() || !stream_request)
+		throw(WebservException("empty request"));
+	std::getline(stream_request, _method, ' ');
+	if (_method != "GET" && _method != "POST")
+		throw(WebservException("unsupported request method " +
+				       _method));
+	if (!stream_request)
+		throw(WebservException("incomplete request"));
+	std::getline(stream_request, _resource, ' ');
+	if (!stream_request)
+		throw(WebservException("incomplete request"));
+	std::getline(stream_request, _version, '\n');
+	if (_version != "HTTP/1.1\r")
+		throw(WebservException("unsupported HTTP version " + _version));
+	std::getline(stream_request, _request, '\0');
 }
 
 void HttpRequest::print()
 {
-        std::cout << this->_method << " " << this->_resource << " "
-                  << this->_version << std::endl;
+	std::cout << this->_method << " " << this->_resource << " "
+		  << this->_version << std::endl;
 }

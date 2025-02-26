@@ -15,19 +15,19 @@
 
 struct Token {
 public:
-        Token();
-        Token(const std::string &value);
-        Token(const Token &);
-        Token &operator=(const Token &);
-        ~Token();
+	Token();
+	Token(const std::string &value);
+	Token(const Token &);
+	Token &operator=(const Token &);
+	~Token();
 
-        enum Type {
-                WORD,
-                BRACK_LEFT = '{',
-                BRACK_RIGHT = '}',
-                SEMI = ';',
-        } type;
-        std::string value;
+	enum Type {
+		WORD,
+		BRACK_LEFT = '{',
+		BRACK_RIGHT = '}',
+		SEMI = ';',
+	} type;
+	std::string value;
 };
 
 std::ostream &operator<<(std::ostream &, const Token &);
