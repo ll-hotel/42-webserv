@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:08:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/26 15:18:39 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:55:02 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,46 @@
 #include "webserv/Exception.hpp"
 #include <ctime>
 #include <fstream>
-#include <queue>
+#include <map>
 #include <string>
 
 class Logger
 {
 public:
-	Logger();
-	Logger(const std::string &);
-	~Logger();
-
 	enum e_log_level { INIT, INFO, DEBUG, WARN, ERROR, LOG_LEVEL_LEN };
-
-	void log(Logger::e_log_level level, const std::string &message);
-	void log(std::string custom_level, const std::string &message);
-	bool isSet() const { return m_isSet; }
+	
+	void message(Logger::e_log_level level, const std::string &message);
+	void message(std::string level, const std::string &message);
 	void open(const std::string &);
-	void open();
-	void close();
-
+	void close(const std::string &);
+	void closeAll();
+	
 	struct s_log_object {
 		char str_time[20];
 		std::string message;
 		std::string level;
 	};
 
+	static Logger &getInstance();
+	
 private:
+
+	static Logger	s_instance;
+	static void	init();
+
+	void	print(Logger::s_log_object &log_object);
+
 	Logger &operator=(Logger &);
 	Logger(Logger &);
 	void openOutFile(const std::string &);
+	Logger();
+	Logger(const std::string &);
+	~Logger();
 
-	std::ofstream m_outFile;
-	bool m_isSet;
+	std::map<std::string, std::ofstream*>	m_files;
 };
 
 std::ostream &operator<<(std::ostream &os,
-			 const Logger::s_log_object &log_object);
-
+	const Logger::s_log_object &log_object);
+	
 #endif

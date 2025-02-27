@@ -6,12 +6,12 @@ RM := rm -fv
 CXX := c++
 
 MODULES :=
+MODULES += logger
 MODULES += config
 MODULES += http_response
 MODULES += httpRequest
 MODULES += socket
 MODULES += webserv
-MODULES += logger
 
 OBJ_DIR := .obj
 SRC_DIR := src
@@ -21,6 +21,7 @@ CPPFLAGS := -MMD -MP
 CXXFLAGS := -Wall -Wextra -Werror
 CXXFLAGS += -Wpedantic
 CXXFLAGS += -std=c++98
+CXXFLAGS += -g
 CXXFLAGS += -I$(INC_DIR)
 
 SRCS :=
