@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:08:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/27 17:55:02 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/28 14:17:36 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,10 @@ public:
 		std::string level;
 	};
 
-	static Logger &getInstance();
+	static Logger &GetInstance();
 	
 private:
-
-	static Logger	s_instance;
-	static void	init();
+	void	init();
 
 	void	print(Logger::s_log_object &log_object);
 

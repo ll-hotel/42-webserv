@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:59:48 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/27 18:05:29 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/28 14:17:58 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,16 @@
 #include <iostream>
 #include <sstream>
 
-Logger Logger::s_instance;
 
-Logger & Logger::getInstance()
+Logger & Logger::GetInstance()
 {
-	static bool is_init = false;
+	static Logger	s_Instance;
+	return (s_Instance);
+}
 
-	if (!is_init)
-	{
-		Logger::init();
-		is_init = true;
-	}
-	return (s_instance);
+Logger::Logger()
+{
+	init();
 }
 
 void Logger::init()
@@ -36,13 +34,13 @@ void Logger::init()
 	tm	*timeinfo;
 	char	str_time[20];
 
-	s_instance.open(".log");
+	open(".log");
 	raw_time = time(0);
 	timeinfo = localtime(&raw_time);
 	strftime(str_time, 20, "%Y%m%d", timeinfo);
-	s_instance.open(std::string(".log") + str_time);
+	open(std::string(".log") + str_time);
 	strftime(str_time, 20, "%Y%m%d%H%M%S", timeinfo);
-	s_instance.open(std::string(".log") + str_time);
+	open(std::string(".log") + str_time);
 }
 
 Logger::Logger(const std::string &t_file_name)
@@ -131,10 +129,6 @@ void Logger::openOutFile(const std::string &t_file_name)
 				       ": " + strerror(errno));
 	}
 	m_files[t_file_name] = new_file;
-}
-
-Logger::Logger()
-{
 }
 
 std::ostream &operator<<(std::ostream &os,
