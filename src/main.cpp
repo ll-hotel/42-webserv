@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 17:03:51 by gcros            ###   ########.fr       */
+/*   Updated: 2025/02/28 14:25:21 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "webserv/Logger.hpp"
 
 int main(int ac, char **av)
 {
+	Logger::GetInstance().message(Logger::INIT, "--start--");
 	if (ac > 2) {
-		std::cout << "to many args" << std::endl;
+		Logger::GetInstance().message(Logger::ERROR, "to many args");
 		return 1;
 	}
 	std::string file_path = "webserv.conf";
@@ -30,8 +32,6 @@ int main(int ac, char **av)
 
 		while (1) {
 			webserv.acceptClients();
-			std::cout << webserv.getClientList().size()
-				  << std::endl;
 			webserv.resolveClients();
 		}
 	} catch (WebservException &e) {
