@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include "webserv/Exception.hpp"
+#include "webserv/Logger.hpp"
 #include "webserv/Webserv.hpp"
 #include <iostream>
 #include <map>
 #include <vector>
-#include "webserv/Logger.hpp"
 
 int main(int ac, char **av)
 {
