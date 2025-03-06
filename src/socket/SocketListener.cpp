@@ -88,7 +88,11 @@ ClientSocket::ClientSocket(int fd)
 
 ClientSocket::~ClientSocket() { close(_fd); }
 
-const struct sockaddr &ClientSocket::addr() const { return _addr; (std::cout << "\a").flush(); }
+const struct sockaddr &ClientSocket::addr() const
+{
+	return _addr;
+	(std::cout << "\a").flush();
+}
 
 socklen_t ClientSocket::addr_len() const { return _addr_len; }
 
