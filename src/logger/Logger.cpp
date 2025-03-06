@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:59:48 by gcros             #+#    #+#             */
-/*   Updated: 2025/03/06 15:41:08 by gcros            ###   ########.fr       */
+/*   Updated: 2025/03/06 15:47:54 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ Logger &Logger::GetInstance()
 	return (s_Instance);
 }
 
-Logger::Logger() { init(); }
-
-void Logger::init()
+Logger::Logger()
 {
 	time_t raw_time;
 	tm *timeinfo;
