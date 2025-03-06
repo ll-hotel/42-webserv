@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:59:48 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/25 18:08:40 by gcros            ###   ########.fr       */
+/*   Updated: 2025/03/06 15:47:54 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,33 @@
 #include <iostream>
 #include <sstream>
 
-Logger::Logger() { this->m_isSet = false; }
+Logger &Logger::GetInstance()
+{
+	static Logger s_Instance;
+	return (s_Instance);
+}
+
+Logger::Logger()
+{
+	time_t raw_time;
+	tm *timeinfo;
+	char str_time[20];
+
+	open(".log");
+	raw_time = time(0);
+	timeinfo = localtime(&raw_time);
+	strftime(str_time, 20, "%Y%m%d", timeinfo);
+	open(std::string(".log") + str_time);
+	strftime(str_time, 20, "%Y%m%d%H%M%S", timeinfo);
+	open(std::string(".log") + str_time);
+}
 
 Logger::Logger(const std::string &t_file_name)
 {
 	this->openOutFile(t_file_name);
 }
 
-Logger::~Logger() { this->close(); }
+Logger::~Logger() { this->closeAll(); }
 
 static std::string level_to_string(Logger::e_log_level t_level)
 {
@@ -35,12 +54,13 @@ static std::string level_to_string(Logger::e_log_level t_level)
 	return (level_list[t_level]);
 }
 
-void Logger::log(Logger::e_log_level t_level, const std::string &t_message)
+void Logger::message(Logger::e_log_level t_level, const std::string &t_message)
 {
-	log(level_to_string(t_level), t_message);
+	message(level_to_string(t_level), t_message);
 }
 
-void Logger::log(std::string t_str_level, const std::string &t_message)
+void Logger::message(const std::string &t_str_level,
+		     const std::string &t_message)
 {
 	struct Logger::s_log_object log_object = {};
 	time_t raw_time;
@@ -51,43 +71,66 @@ void Logger::log(std::string t_str_level, const std::string &t_message)
 	raw_time = time(0);
 	timeinfo = localtime(&raw_time);
 	strftime(log_object.str_time, 20, "%Y-%m-%d %H:%M:%S", timeinfo);
+	print(log_object);
+}
+
+void Logger::print(Logger::s_log_object &log_object)
+{
+	std::map<std::string, std::ofstream *>::iterator it_cur =
+		m_files.begin();
+	std::map<std::string, std::ofstream *>::iterator it_end = m_files.end();
+
 	std::cout << log_object;
-	if (m_isSet)
-		this->m_outFile << log_object;
-}
-void Logger::open(const std::string &t_file_name)
-{
-	this->close();
-	openOutFile(t_file_name);
+
+	for (; it_cur != it_end; it_cur++) {
+		if (it_cur->second != NULL)
+			*it_cur->second << log_object;
+	}
 }
 
-void Logger::open() { this->open("logout.txt"); }
+void Logger::open(const std::string &t_file_name) { openOutFile(t_file_name); }
 
-void Logger::close()
+void Logger::close(const std::string &t_file_name)
 {
-	if (!m_isSet)
-		return;
-	m_outFile.close();
-	m_isSet = false;
+	delete m_files[t_file_name];
+	m_files[t_file_name] = NULL;
+}
+
+void Logger::closeAll()
+{
+	std::map<std::string, std::ofstream *>::iterator it_cur =
+		m_files.begin();
+	std::map<std::string, std::ofstream *>::iterator it_end = m_files.end();
+	for (; it_cur != it_end; it_cur++) {
+		delete it_cur->second;
+		it_cur->second = NULL;
+	}
 }
 
 void Logger::openOutFile(const std::string &t_file_name)
 {
-	this->m_outFile.open(t_file_name.c_str(), std::fstream::app);
-	if (this->m_outFile.bad() || !this->m_outFile.is_open())
+	if (this->m_files[t_file_name] != NULL)
+		throw WebservException(std::string("logger: ") + t_file_name +
+				       ": already open");
+	std::ofstream *new_file =
+		new std::ofstream(t_file_name.c_str(), std::fstream::app);
+
+	if (new_file->bad() || !new_file->is_open()) {
+		delete new_file;
 		throw WebservException(std::string("logger: ") + t_file_name +
 				       ": " + strerror(errno));
-	this->m_isSet = true;
-	this->log(Logger::INIT, "---start log---");
+	}
+	m_files[t_file_name] = new_file;
 }
+
 std::ostream &operator<<(std::ostream &os,
 			 const Logger::s_log_object &t_log_object)
 {
 	std::ostringstream log_entry;
 
-	log_entry << "[" << t_log_object.str_time << "] "
-		  << "[" << t_log_object.level << "]"
-		  << ": " << t_log_object.message << std::endl;
+	log_entry << "[" << t_log_object.str_time << "] " << "["
+		  << t_log_object.level << "]" << ": " << t_log_object.message
+		  << std::endl;
 	os << log_entry.str();
 	os.flush();
 	return (os);

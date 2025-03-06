@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:46:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/26 14:17:09 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:28:42 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void Webserv::acceptClients()
 			client_handle.client = socket_action->accept();
 			client_handle.eevents = epoll_events[nbr_action_count];
 			m_clientsList.push(client_handle);
-		} catch (WebservException e) {
+		} catch (WebservException &e) {
 			e.print();
 		}
 	}

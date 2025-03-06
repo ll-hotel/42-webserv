@@ -21,6 +21,7 @@ CPPFLAGS := -MMD -MP
 CXXFLAGS := -Wall -Wextra -Werror
 CXXFLAGS += -Wpedantic
 CXXFLAGS += -std=c++98
+CXXFLAGS += -g
 CXXFLAGS += -I$(INC_DIR)
 
 SRCS :=
