@@ -30,7 +30,7 @@ public:
 		: _str("webserv: error: " + str)
 	{
 	}
-	virtual ~WebservException() throw(){};
+	virtual ~WebservException() throw() {};
 	virtual const char *what() const throw() { return _str.c_str(); }
 	virtual void print() const throw() { std::cerr << what() << std::endl; }
 };

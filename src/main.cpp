@@ -6,16 +6,13 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:40:52 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/28 14:25:21 by gcros            ###   ########.fr       */
+/*   Updated: 2025/03/06 16:28:18 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/Exception.hpp"
 #include "webserv/Logger.hpp"
 #include "webserv/Webserv.hpp"
-#include <iostream>
-#include <map>
-#include <vector>
 
 int main(int ac, char **av)
 {
@@ -30,7 +27,7 @@ int main(int ac, char **av)
 	try {
 		Webserv webserv(file_path);
 
-		while (1) {
+		while (true) {
 			webserv.acceptClients();
 			webserv.resolveClients();
 		}

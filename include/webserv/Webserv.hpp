@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:14:17 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/26 15:19:42 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:26:56 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #define DEFAULT_POLL_TIMEOUT 500
 
 struct s_client_handler {
-	ClientSocket *client;
+	ClientSocket *socket;
 	struct epoll_event eevents;
 };
 

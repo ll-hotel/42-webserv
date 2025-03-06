@@ -6,16 +6,17 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:46:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/03/06 15:28:42 by gcros            ###   ########.fr       */
+/*   Updated: 2025/03/06 16:27:53 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv/Webserv.hpp"
 #include "webserv/Exception.hpp"
+#include "webserv/HttpRequest.hpp"
+#include "webserv/HttpResponse.hpp"
 #include "webserv/config/validate_paths.hpp"
 #include <cstring>
 #include <errno.h>
-#include <exception>
 #include <map>
 #include <unistd.h>
 #include <vector>
@@ -114,7 +115,7 @@ void Webserv::acceptClients()
 		}
 		try {
 			struct s_client_handler client_handle;
-			client_handle.client = socket_action->accept();
+			client_handle.socket = socket_action->accept();
 			client_handle.eevents = epoll_events[nbr_action_count];
 			m_clientsList.push(client_handle);
 		} catch (WebservException &e) {
@@ -130,8 +131,15 @@ void Webserv::resolveClients()
 	     clients_count--) {
 		struct s_client_handler client = this->m_clientsList.front();
 		this->m_clientsList.pop();
-		std::cout << "Client on " << client.client->fd() << std::endl;
-		this->m_clientsList.push(client);
+
+		try {
+			std::string request_str = client.socket->recv();
+			HttpRequest request(request_str);
+			HttpResponse response(request);
+			client.socket->send(response.generate());
+		} catch (const WebservException &e) {
+			e.print();
+		}
 	}
 }
 Webserv::~Webserv()
@@ -142,7 +150,7 @@ Webserv::~Webserv()
 	for (; it_inc != it_end; it_inc++)
 		delete *it_inc;
 	while (m_clientsList.size() != 0) {
-		ClientSocket *client = m_clientsList.front().client;
+		ClientSocket *client = m_clientsList.front().socket;
 		delete client;
 		m_clientsList.pop();
 	}
