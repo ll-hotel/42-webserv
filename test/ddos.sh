@@ -1,34 +1,44 @@
 #!/bin/bash
 
-url="10.19.230.85:8080"
+url="$1"
+port="$2"
+
+if [[ -z $url ]]; then
+	echo "Missing url"
+	exit 1
+fi
 
 get_index() {
-    curl -fs $1 >/dev/null
+    curl -fs $url $port >/dev/null
 }
 
+if [[ -n $url ]]; then
+	port="-p $port"
+fi
+
 while [ true ]; do
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
-    get_index $url &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
+    get_index &
 done
