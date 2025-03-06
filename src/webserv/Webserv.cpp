@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:46:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/03/06 16:27:53 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:40:43 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void Webserv::resolveClients()
 		} catch (const WebservException &e) {
 			e.print();
 		}
+		delete client.socket;
 	}
 }
 Webserv::~Webserv()

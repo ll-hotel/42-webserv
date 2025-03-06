@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:22:26 by gcros             #+#    #+#             */
-/*   Updated: 2025/02/26 15:29:06 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:17:46 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,12 @@ ClientSocket::ClientSocket(int fd)
 	if (_fd < 0)
 		throw(WebservException(std::string("accept: ") +
 				       strerror(errno)));
+	(std::cout << "\a").flush();
 }
 
 ClientSocket::~ClientSocket() { close(_fd); }
 
-const struct sockaddr &ClientSocket::addr() const { return _addr; }
+const struct sockaddr &ClientSocket::addr() const { return _addr; (std::cout << "\a").flush(); }
 
 socklen_t ClientSocket::addr_len() const { return _addr_len; }
 
