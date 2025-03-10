@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:14:17 by gcros             #+#    #+#             */
-/*   Updated: 2025/03/06 16:26:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:44:36 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include "webserv/SocketListener.hpp"
 
 #define DEFAULT_POLL_TIMEOUT 500
+#define DEFAULT_EPOLL_MAX_EVENT 20
+#define DEFAULT_EPOLL_SIZE 100
 
 struct s_client_handler {
 	ClientSocket *socket;
@@ -47,7 +49,6 @@ private:
 	std::vector<ServerConfig> m_serverConfig;
 	std::vector<SocketListener *> m_listeners;
 	int m_epollFd;
-	size_t m_epollSize;
 	std::queue<struct s_client_handler> m_clientsList;
 };
 

@@ -6,7 +6,7 @@
 /*   By: gcros <gcros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 15:46:44 by gcros             #+#    #+#             */
-/*   Updated: 2025/03/06 16:40:43 by gcros            ###   ########.fr       */
+/*   Updated: 2025/03/10 14:44:38 by gcros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ Webserv::Webserv(const std::string &file_name)
 	for (size_t i = 0; i < m_serverConfig.size(); i += 1)
 		validate_paths(m_serverConfig[i]);
 	generate_socketListeners(m_serverConfig, m_listeners);
-	m_epollSize = m_listeners.size();
-	m_epollFd = epoll_create(m_epollSize);
+	m_epollFd = epoll_create(DEFAULT_EPOLL_SIZE);
 	if (m_epollFd < 0)
 		throw(WebservException(std::string("epoll_create: ") +
 				       strerror(errno)));
@@ -94,25 +93,21 @@ static inline std::map<int, SocketListener *> set_listener(Webserv &ws)
 void Webserv::acceptClients()
 {
 	std::map<int, SocketListener *> listener_map;
-	struct epoll_event *epoll_events =
-		new struct epoll_event[this->m_epollSize]();
+	struct epoll_event epoll_events[DEFAULT_EPOLL_MAX_EVENT];
 
 	listener_map = set_listener(*this);
-	int nbr_action = epoll_wait(m_epollFd, epoll_events, m_epollSize,
-				    DEFAULT_POLL_TIMEOUT);
-	if (nbr_action < 0) {
-		delete[] epoll_events;
+	int nbr_action =
+		epoll_wait(m_epollFd, epoll_events, DEFAULT_EPOLL_MAX_EVENT,
+			   DEFAULT_POLL_TIMEOUT);
+	if (nbr_action < 0)
 		throw WebservException(std::string("epoll_wait: ") +
 				       strerror(errno));
-	}
 	for (int nbr_action_count = 0; nbr_action_count < nbr_action;
 	     nbr_action_count++) {
 		SocketListener *socket_action =
 			listener_map[epoll_events[nbr_action_count].data.fd];
-		if (socket_action == NULL) {
-			delete[] epoll_events;
+		if (socket_action == NULL)
 			throw WebservException("socketListener not found");
-		}
 		try {
 			struct s_client_handler client_handle;
 			client_handle.socket = socket_action->accept();
@@ -122,7 +117,6 @@ void Webserv::acceptClients()
 			e.print();
 		}
 	}
-	delete[] epoll_events;
 }
 
 void Webserv::resolveClients()
@@ -131,15 +125,15 @@ void Webserv::resolveClients()
 	     clients_count--) {
 		struct s_client_handler client = this->m_clientsList.front();
 		this->m_clientsList.pop();
-
-		try {
-			std::string request_str = client.socket->recv();
-			HttpRequest request(request_str);
-			HttpResponse response(request);
-			client.socket->send(response.generate());
-		} catch (const WebservException &e) {
-			e.print();
-		}
+		if (client.eevents.events)
+			try {
+				std::string request_str = client.socket->recv();
+				HttpRequest request(request_str);
+				HttpResponse response(request);
+				client.socket->send(response.generate());
+			} catch (const WebservException &e) {
+				e.print();
+			}
 		delete client.socket;
 	}
 }
